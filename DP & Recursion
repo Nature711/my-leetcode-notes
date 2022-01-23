@@ -1,9 +1,9 @@
 ### Related Topics
- - Dynamic Programming
- - Recursion
- - Backtracking search
+- Dynamic Programming
+- Recursion
+- Backtracking search
 
-### Version 1: Regular recursion (no DP, no memoization)
+## Version 1: Regular recursion (no DP, no memoization)
 
 ```
 func fib(n int) int {
@@ -17,7 +17,7 @@ func fib(n int) int {
 }
 ```
 
-### Version 2: Top-down DP (recursion + memoization)
+## Version 2: Top-down DP (recursion + memoization)
 
 ```
 func fibTopDown(n int) int {
@@ -40,14 +40,14 @@ func fibTopDownHelper(n int, memo map[int]int) int {
 	return memo[n]
 }
 ```
-### Version 3: Bottom-up DP (forward)
-//
-// f(i-1)
-//      \
-//       >-------> f(i)
-//      /
-// f(i-2)
-//
+## Version 3: Bottom-up DP (forward)
+
+ f(i-1)
+     \
+       >-------> f(i)
+      /
+ f(i-2)
+
 ```
 func fibBottomUpDPForward(n int) int {
 	if n == 0 {
@@ -66,14 +66,14 @@ func fibBottomUpDPForward(n int) int {
 }
 ```
 
-### Version 4: Bottom-up DP (backward)
-//
-//   -----> f(i+2)
-//   |
-// f(i)
-//   |
-//   -----> f(i+1)
-//
+## Version 4: Bottom-up DP (backward)
+
+   -----> f(i+2)
+   |
+ f(i)
+   |
+   -----> f(i+1)
+
 ```
 func fibBottomUpDPBackward(n int) int {
 	if n == 0 {
