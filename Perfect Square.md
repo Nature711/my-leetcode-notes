@@ -3,20 +3,21 @@
 - [Leetcode -- Perfect Squares (Medium)](https://leetcode.com/problems/perfect-squares/）
 
 ## Top-down recursion without memo (Time limit exceeded)
+- similar idea to coin change
+- perfect square numbers ~~ available denominations
+- to find the min no of perfect squares that add up to n ~~ to make change for n using available denominations
+- most naive approach: using all 1s (initialization)
+- goal is to make use of avaiable denomiations to optimize
+- at each step I can either stay with current choice, or use one more perfect square number to "make change" for the current amount
+- after making change the remaining amount is the input to subproblem
+- solution to current step is the optimized result among all attempts 
 ```
     public int numSquares(int n) {
         int ans = n;
         for (int i = 1; i < n; i++) {
             int square = i * i;
             if (square > n || square < 0) break;
-            ans = Math.min(ans, 1 + numSquares(n - square)); //similar idea to coin change 
-            //perfect square numbers ~~ available denominations
-            //to find the min no of perfect squares that add up to n ~~ to make change for n using available denominations
-            //most naive approach: using all 1s (initialization)
-            //goal is to make use of avaiable denomiations to optimize
-            //at each step I can either stay with current choice, or use one more perfect square number to "make change" for the current amount
-            //after making change the remaining amount is the input to subproblem
-            //solution to current step is the optimized result among all attempts 
+            ans = Math.min(ans, 1 + numSquares(n - square)); 
         }
         return ans;
     }
