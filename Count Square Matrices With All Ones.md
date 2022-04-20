@@ -12,6 +12,8 @@
 - Time complexity: O(m * n * min(m * n))
   - m * n entries, each used once as the top-left corner (starting point) for extending
   - extending each corner involves checking if there is a square matrix, of side 1 up to the upper limit, starting at that corner
+ 
+  ![image](https://user-images.githubusercontent.com/77217430/164127560-e6355ec8-576b-4ffd-a07c-088efe40ac6c.png)
 ```
   public int countSquares(int[][] matrix) {
         int m = matrix.length;
@@ -49,6 +51,9 @@
 - Time complexity: O(m * n) 
   - m * n entries in dp table
   - O(1) for each entry
+
+  ![image](https://user-images.githubusercontent.com/77217430/164127580-2369ebe4-b00c-47b2-92be-7aa4273aae83.png)
+
 ```
   public int countSquares(int[][] matrix) {
         int m = matrix.length;
