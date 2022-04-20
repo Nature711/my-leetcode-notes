@@ -1,6 +1,7 @@
-### Perfect Squares
+# Perfect Squares
 
-- [Leetcode -- Perfect Squares (Medium)](https://leetcode.com/problems/perfect-squares/）
+## Links
+- [Question](https://leetcode.com/problems/perfect-squares/)
 
 ## Top-down recursion without memo (Time limit exceeded)
 - similar idea to coin change
