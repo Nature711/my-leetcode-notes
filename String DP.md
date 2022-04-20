@@ -33,6 +33,8 @@
     
   ### Solution 2: Increasing length
   - Idea: build up subproblems by considering palindromic subsequence of increasing lengths
+  
+  ![image](https://user-images.githubusercontent.com/77217430/164228688-b19b6cbb-30c5-4cce-8683-16e18bb21bdf.png)
 
 ```
     public int longestPalindromeSubseq(String s) {
