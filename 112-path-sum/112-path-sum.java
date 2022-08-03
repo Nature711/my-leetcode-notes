@@ -14,24 +14,22 @@
  * }
  */
 class Solution {
-    int sum = 0;
+    
     public boolean hasPathSum(TreeNode root, int targetSum) {
-		// condition to end the backtrack
-        if(root == null) return false;
-		
-        //choose
-        sum += root.val;   
-		
-		//explore
-        if(root.right == null && root.left == null && sum == targetSum) {
-            return true;
-        } else {
-             if(hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum)) return true;
-        }
-        //unchoose: 
-        sum -= root.val;
+		return backtrack(root, targetSum);  
+    }
+    
+    public boolean backtrack(TreeNode curr, int rem) {
+        if (curr == null) return false;
         
-        return false;        
+        rem -= curr.val;
+        
+        if (curr.right == null && curr.left == null) {
+            if (rem == 0) return true;
+            return false;
+        }
+        
+        return backtrack(curr.left, rem) || backtrack(curr.right, rem);
     }
 }
 
