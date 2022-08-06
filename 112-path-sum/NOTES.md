@@ -1,5 +1,6 @@
-## Recursion
+## Recursive DFS
 ```
+    public boolean hasPathSum(TreeNode root, int targetSum) {
         if (root == null) return false;
         if (root.left == null && root.right == null && root.val == targetSum) return true;
         return hasPathSum(root.left, targetSum - root.val)
@@ -56,4 +57,37 @@
 }
 
  ```
+ 
+ ## Iterative DFS
+ ```
+  public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) return false;
+        
+        Stack<Pair<TreeNode, Integer>> stack = new Stack<>();
+        
+        stack.add(new Pair<>(root, root.val));
+        
+        while (!stack.isEmpty()) {
+            Pair<TreeNode, Integer> curr = stack.pop();
+            TreeNode currNode = curr.getKey();
+            int currSum = curr.getValue();
+        
+            if (currNode.left == null && currNode.right == null 
+                && currSum == targetSum) {
+                return true;
+            }
+            
+            if (currNode.left != null) {
+                stack.add(new Pair<>(currNode.left, currSum + currNode.left.val));
+            }
+            if (currNode.right != null) {
+                stack.add(new Pair<>(currNode.right, currSum + currNode.right.val));
+            }
+            
+        }
+        
+        return false;
+    }
+ ```
+ 
  
