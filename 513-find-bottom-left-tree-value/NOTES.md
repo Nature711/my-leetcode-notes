@@ -61,3 +61,6 @@ public int findLeftMostNode(TreeNode root) {
     return root.val;
 }
 ```
+- nature of queue: first in first out
+- because we always add the right child before adding the left child, we're sure the right child is always polled and explored first 
+- what's being explored the last must be the leftmost child of the last row --> target node
