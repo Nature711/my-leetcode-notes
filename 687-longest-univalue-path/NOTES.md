@@ -27,4 +27,7 @@ node r as root
 //the checking of leftPath and rightPath are independent from each other
 - if r doesn't have left child, then leftPath will remain 0
 - if r doesn't have right child, then rightPath will remain 0
-- r, being called from dfs(r), is just responsible for returning the max between leftPath and rightPath
+
+- at r: leftPath = 2, rightPath = 2 --> longestUniValuePath = leftPath + rightPath = 2 + 2 = 4
+- r, being called from dfs(r), is just responsible for returning the max between leftPath and rightPath because it can just take on a single path
+
