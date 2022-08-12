@@ -17,5 +17,20 @@
 
 
 ## Traveral & BST
-- Traversal can be applied to any tree
-- In the case when the tree is a BST: level Order traversal prints the nodes in ascending order
+
+```
+
+         4
+       /   \
+      2     5
+    /   \
+   1     3
+```
+
+In the case when the tree is a BST, norder traversal prints the node in ascending order
+- Inorder: 1 2 3 4 5
+- Preorder: 4 2 1 3 5 
+- Postorder: 1 3 2 5 4
+- Level-order: 4 2 5 1 3
+
+
