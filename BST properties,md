@@ -1,0 +1,21 @@
+## Review: Tree traversal
+
+```
+         1
+       /   \
+      2     3
+    /   \
+   4     5
+```
+
+### Depth First Traversals: 
+- Inorder (Left, Root, Right) : 4 2 5 1 3 
+- Preorder (Root, Left, Right) : 1 2 4 5 3 
+- Postorder (Left, Right, Root) : 4 5 2 3 1
+
+### Breadth-First (i.e., Level Order) Traversal: 1 2 3 4 5 
+
+
+## Traveral & BST
+- Traversal can be applied to any tree
+- In the case when the tree is a BST: level Order traversal prints the nodes in ascending order
