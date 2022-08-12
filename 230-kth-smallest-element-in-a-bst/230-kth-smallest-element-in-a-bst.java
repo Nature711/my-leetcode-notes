@@ -15,22 +15,21 @@
  */
 class Solution {
     
-    List<Integer> nodes = new ArrayList<>();
-    int targetSize = 0;
-    
     public int kthSmallest(TreeNode root, int k) {
-        targetSize = k;
-        dfs(root);
-        return nodes.get(k - 1);
+        Stack<TreeNode> stack = new Stack<>();
+        int count = 0;
+        
+        while(true) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            count++;
+            if (count == k) return root.val;
+            root = root.right;
+        }
+
     }
     
-    public void dfs(TreeNode root) {
-        if (root == null) return;
-        dfs(root.left);
-        if (nodes.size() == targetSize) return; 
-        nodes.add(root.val);
-        if (nodes.size() == targetSize) return;
-        dfs(root.right);
-        if (nodes.size() == targetSize) return;
-    }
 }
