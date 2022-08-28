@@ -1,6 +1,6 @@
 ### Related Problems
-- Longest Consecutive Sequence(https://leetcode.com/problems/longest-consecutive-sequence/)
-- Number of Provinces(https://leetcode.com/problems/number-of-provinces/)
+- [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+- [Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
 
 ### Sample Code
 
