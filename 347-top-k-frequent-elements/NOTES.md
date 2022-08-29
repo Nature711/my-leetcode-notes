@@ -57,8 +57,33 @@
         
         PriorityQueue<Integer> pq = new PriorityQueue<>((x,y) -> map.get(y) - map.get(x)); //max heap
         
-        for(int num: nums) {
+        for(int num: map.keySet()) {
             if (!pq.contains(num)) pq.add(num);
+        }
+        
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = pq.poll();
+        }
+        return res;
+    }
+```
+
+## Min heap
+- priority queue (min heap) ordered by element frequency -- element with lowest frequency is at root
+- pq size is limited to k -- the smaller (n - k) elements will be popped off
+
+```
+ public int[] topKFrequent(int[] nums, int k) {
+        
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int num: nums) map.put(num, map.getOrDefault(num, 0) + 1);
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>((x,y) -> map.get(x) - map.get(y)); //min heap
+        
+        for(int num: map.keySet()) {
+            pq.add(num);
+            if (pq.size() > k) pq.poll();
         }
         
         int[] res = new int[k];
