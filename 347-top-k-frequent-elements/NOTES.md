@@ -45,3 +45,26 @@
             
     }
    ```
+
+## Max heap
+- priority queue (min heap) ordered by element frequency -- element with highest frequency is at root
+- pq of size at most n, each insertion O(logN)
+```
+ public int[] topKFrequent(int[] nums, int k) {
+        
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int num: nums) map.put(num, map.getOrDefault(num, 0) + 1);
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>((x,y) -> map.get(y) - map.get(x)); //max heap
+        
+        for(int num: nums) {
+            if (!pq.contains(num)) pq.add(num);
+        }
+        
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = pq.poll();
+        }
+        return res;
+    }
+```
