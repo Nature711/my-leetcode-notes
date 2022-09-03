@@ -32,7 +32,6 @@
   - Claim: There exists an optimal solution that contains pair i
   - Proof: Suppose there is an optimal solution that does not contain pair i. Then, replace the last pair in S with pair i. The chain length does not decrease. So new chain is optimal and contains pair i.
 
-      0      1      2      3
  1 [(1,2), (3,4), (5,6). (7,8)]
 
  2 [(1,2), (4,5), (3,6). (6,7)]
