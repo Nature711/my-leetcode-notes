@@ -1,20 +1,13 @@
 class Solution {
     public char findTheDifference(String s, String t) {
         
-        HashMap<Character, Integer> sMap = new HashMap<>();
-        
-        for (int i = 0; i < s.length(); i++) {
-            sMap.put(s.charAt(i), sMap.getOrDefault(s.charAt(i), 0) + 1);
-        }
-        
+        int[] arr = new int[26];
+        for (char c: s.toCharArray()) arr[c - 'a']++;
         
         for (char c: t.toCharArray()) {
+            if (arr[c - 'a'] == 0) return c;
             
-            if (sMap.containsKey(c)) {
-                if (sMap.get(c) == 1) sMap.remove(c);
-                else sMap.put(c, sMap.get(c) - 1);
-            } else return c;
-        
+            arr[c - 'a']--;
         }
         
         return 'a';
