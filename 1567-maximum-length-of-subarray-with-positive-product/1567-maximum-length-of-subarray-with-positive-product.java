@@ -23,8 +23,6 @@ class Solution {
                 dp[i][1] = 0;
             }
             
-            //System.out.println("i " + i + " dp[i][0] " + dp[i][0] + " dp[i][1] " + dp[i][1]);
-            
             max = Math.max(max, dp[i][0]);
         }
         return max;
