@@ -4,6 +4,7 @@ class Solution {
         
         while (low < n) {
             high = n - 1;
+            if (maxDiff > high - low) break;
             while (low < high && colors[low] == colors[high]) {
                 high--;
             }
