@@ -9,8 +9,11 @@ country_duration as (
     from person_country pc, Country ct, Calls c
     where (pc.id = c.caller_id or pc.id = c.callee_id) and pc.phone_code = ct.country_code
     group by country_code
+    having AVG(c.duration) > (select avg(duration) as global_avg_duration from Calls)
 )
-select country
-from country_duration 
-where country_avg_duration > (select avg(duration) as global_avg_duration from Calls);
+select country from country_duration;
+
+# select country
+# from country_duration 
+# where country_avg_duration > (select avg(duration) as global_avg_duration from Calls);
 
