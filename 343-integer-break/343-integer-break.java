@@ -1,6 +1,6 @@
 class Solution {
     
-    HashMap<Integer, Integer> memo = new HashMap<>();
+   HashMap<Integer, Integer> memo = new HashMap<>();
     
     public int integerBreak(int n) {
         if (n <= 2) return 1;
@@ -15,3 +15,5 @@ class Solution {
         return res;
     }
 }
+
+
