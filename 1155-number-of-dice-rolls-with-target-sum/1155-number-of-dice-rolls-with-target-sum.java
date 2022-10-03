@@ -3,8 +3,6 @@ class Solution {
         int[][] dp = new int[n + 1][target + 1]; //dp[i][j] = no of ways to sum up to j using i dices
         
         dp[0][0] = 1;
-        for (int i = 1; i <= n; i++) dp[i][0] = 0; //no way to sum to 0 with positive no. of dices
-        for (int j = 1; j <= target; j++) dp[0][j] = 0; //no way to sum up to a postive target with no dices
         
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= target; j++) {
