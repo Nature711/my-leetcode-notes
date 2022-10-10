@@ -1,33 +1,26 @@
 class Solution {
-    Set<Integer> safeNodes = new HashSet<>();
-    Set<Integer> visited = new HashSet<>();
-    
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        for (int i = graph.length - 1; i >= 0; i--) {
-            if (graph[i].length == 0) {
-                safeNodes.add(i);
-                visited.add(i);
-            } else isSafeNode(i, graph);
-        }
-        List<Integer> res = new ArrayList<>();
-        for (int node: safeNodes) res.add(node);
-        Collections.sort(res);
-        return res;
+        int N = graph.length;
+        int[] color = new int[N];
+        List<Integer> ans = new ArrayList();
+
+        for (int i = 0; i < N; ++i)
+            if (dfs(i, color, graph))
+                ans.add(i);
+        return ans;
     }
-    
-    public boolean isSafeNode(int node, int[][] graph) {
-     
-        if (visited.contains(node)) return safeNodes.contains(node);
-        
-        visited.add(node);
-  
-        for (int out: graph[node]) {
-            if (!isSafeNode(out, graph)) return false;
+
+    // colors: WHITE 0, GRAY 1, BLACK 2;
+    public boolean dfs(int node, int[] color, int[][] graph) {
+        if (color[node] > 0)
+            return color[node] == 2;
+
+        color[node] = 1;
+        for (int nei: graph[node]) {
+            if (!dfs(nei, color, graph)) return false;
         }
-        
-        safeNodes.add(node);
-        
+
+        color[node] = 2;
         return true;
     }
-    
 }
