@@ -24,6 +24,6 @@ while (steps > 0) {
 
 ## Related problems
 - [Delete N nodes after M nodes](https://github.com/Nature711/my-leetcode-notes/blob/master/1474-delete-n-nodes-after-m-nodes-of-a-linked-list/1474-delete-n-nodes-after-m-nodes-of-a-linked-list.java)
-- [Removing Nth node from end of list]()
+- [Removing Nth node from end of list](https://github.com/Nature711/my-leetcode-notes/blob/master/0019-remove-nth-node-from-end-of-list/0019-remove-nth-node-from-end-of-list.java)
 - [Swapping nodes in linked list](https://leetcode.com/problems/swapping-nodes-in-a-linked-list/)
 
