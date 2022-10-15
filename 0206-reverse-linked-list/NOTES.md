@@ -29,7 +29,6 @@ p = reverseList(head.next)
 ^                    ^
 head                 p
 
-
 head.next.next = head;
 1 <-> (2 <- 3 <- 4 <- 5)
 ^                     ^
@@ -51,5 +50,49 @@ code
         head.next.next = head;
         head.next = null;
         return p;
+    }
+```
+
+## Recursion (not in space)
+```
+ public static ListNode reverseList(ListNode head) {
+            if (head == null) return null;
+            return append(reverseList(head.next), new ListNode(head.val));
+        }
+
+        public static ListNode append(ListNode l1, ListNode l2) {
+            if (l1 == null) return l2;
+            if (l2 == null) return l1;
+            return new ListNode(l1.val, append(l1.next , l2));
+        }
+ 
+```
+
+
+
+## Iterative
+```
+public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode prev = dummy;
+        ListNode curr = head;
+        ListNode next;
+        
+        while (curr != null) {
+            next = curr.next;
+            
+            curr.next = prev;
+            
+            if (prev == dummy) curr.next = null;
+            
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
     }
 ```
