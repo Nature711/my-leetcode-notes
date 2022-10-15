@@ -9,27 +9,17 @@
  * }
  */
 class Solution {
-    public int[] nextLargerNodes(ListNode head) {
-        List<Integer> resList = new ArrayList<>();
-        ListNode ptr = head;
-        while (ptr != null) {
-            ListNode finder = ptr.next;
-            boolean found = false;
-            while (finder != null) {
-                if (finder.val > ptr.val) {
-                    resList.add(finder.val);
-                    found = true;
-                    break;
-                }
-                finder = finder.next;
-            }
-            if (!found) resList.add(0);
-            ptr = ptr.next;
+      public int[] nextLargerNodes(ListNode head) {
+        ArrayList<Integer> A = new ArrayList<>();
+        for (ListNode node = head; node != null; node = node.next)
+            A.add(node.val);
+        int[] res = new int[A.size()];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < A.size(); ++i) {
+            while (!stack.isEmpty() && A.get(stack.peek()) < A.get(i))
+                res[stack.pop()] = A.get(i);
+            stack.push(i);
         }
-        
-        int[] res = new int[resList.size()];
-        for (int i = 0; i < resList.size(); i++) res[i] = resList.get(i);
-        
         return res;
     }
 }
