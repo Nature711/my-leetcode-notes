@@ -3,19 +3,28 @@ class Solution {
         int n = intervals.length;
         if (n <= 1) return n;
         
-		// Sort by ascending starting point
-		Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+		int[] starts = new int[n];
+        int[] ends = new int[n];
         
-        for (int[] interval: intervals) {
-            if (pq.isEmpty()) pq.add(interval[1]);
-            else {
-                if (interval[0] >= pq.peek()) pq.poll();
-                pq.add(interval[1]);
-            }
+        for (int i = 0; i < n; i++) {
+            starts[i] = intervals[i][0];
+            ends[i] = intervals[i][1];
         }
         
-        return pq.size();
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+        
+        int s_ptr = 1;
+        int e_ptr = 0;
+        int count = 1;
+        
+        while (s_ptr < n) {
+            if (starts[s_ptr] < ends[e_ptr]) count++;
+            else e_ptr++;
+            s_ptr++;
+        }
+        
+        return count;
+        
     }
 }
