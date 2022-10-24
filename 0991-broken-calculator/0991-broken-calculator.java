@@ -2,10 +2,14 @@ class Solution {
     
     public int brokenCalc(int startValue, int target) {
         
-        if (target <= startValue) return startValue - target; 
+        int steps = 0;
         
-        if (target % 2 == 0) return 1 + brokenCalc(startValue, target / 2);
+        while (target > startValue) {
+            if (target % 2 == 0) target /= 2;
+            else target++;
+            steps++;
+        }
         
-        return 1 + brokenCalc(startValue, target + 1);
+        return steps + startValue - target;
     }
 }
