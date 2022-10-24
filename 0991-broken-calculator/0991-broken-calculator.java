@@ -1,7 +1,5 @@
 class Solution {
     
-    HashMap<Integer, Integer> memo = new HashMap<>();
-    
     public int brokenCalc(int startValue, int target) {
         
         if (target <= startValue) return startValue - target; 
