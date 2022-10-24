@@ -1,28 +1,20 @@
 class Solution {
     public int minSteps(int n) {
         
-        int steps = 0;
-        while (n > 1) {
-            if (n % 2 == 0) {
-                steps += 2;
-                n /= 2;
-            } else {
-                int div = findDivisor(n);
-                if (div == -1) return steps + n;
-                else {
-                    steps += div;
-                    n /= div;
-                }
+        int[] dp = new int[n + 1];
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            if (dp[i] == 0) {
+                //System.out.println("new val at " + i);
+                dp[i] = i;
+            }
+            for (int j = 2; i * j <= n; j++) {
+                dp[i * j] = dp[i] + j;
+                //System.out.println("from " + i + " updating " + i * j + " to " + dp[i * j]);
             }
         }
-        
-        return steps;
+
+        return dp[n];
     }
-    
-    
-    public int findDivisor(int n) {
-        for (int i = 3; i < n / 2; i++) if (n % i == 0) return i;
-        return -1;
-    }
-    
 }
