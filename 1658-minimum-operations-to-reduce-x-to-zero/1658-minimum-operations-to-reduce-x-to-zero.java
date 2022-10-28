@@ -21,14 +21,16 @@ class Solution {
         for (int f_sum: forward_sum_map.keySet()) {
             if (backward_sum_map.containsKey(x - f_sum)) {
                 int op = forward_sum_map.get(f_sum) + backward_sum_map.get(x- f_sum);
-                minOp = Math.min(minOp, op);                                                
+                minOp = Math.min(minOp, op);   
+                break;
             } 
         }
         
         for (int b_sum: backward_sum_map.keySet()) {
             if (forward_sum_map.containsKey(x - b_sum)) {
                 int op = forward_sum_map.get(x - b_sum) + backward_sum_map.get(b_sum);
-                minOp = Math.min(minOp, op);                                                
+                minOp = Math.min(minOp, op);  
+                break;
             } 
         }
         
