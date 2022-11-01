@@ -19,7 +19,7 @@
 
 ## Stack (LIFO)
 
-- Initialization: ```Stack<T> stack = new Stack<>();
+- Initialization: ```Stack<T> stack = new Stack<>();```
   
 - Operations
   - add an element: ```stack.push(ele)```
