@@ -1,18 +1,26 @@
 class Solution {
     public int smallestCommonElement(int[][] mat) {
-        int[] counts = new int[10001];
-        
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                counts[mat[i][j]]++;
+        for (int i = 0; i < mat[0].length; i++) {
+            boolean bool = true;
+            for (int j = 1; j < mat.length; j++) {
+                if (!binarySearch(mat[j], mat[0][i])) {
+                    bool = false;
+                    break;
+                }
             }
+            if (bool) return mat[0][i];
         }
-        
-        for (int i = 0; i < counts.length; i++) {
-            if (counts[i] == mat.length) return i;
-        }
-        
         return -1;
     }
     
+    public boolean binarySearch(int[] arr, int target) {
+        int low = 0, high = arr.length;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target) return true;
+            else if (arr[mid] < target) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
 }
