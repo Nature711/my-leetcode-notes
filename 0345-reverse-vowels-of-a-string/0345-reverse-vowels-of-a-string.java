@@ -16,24 +16,10 @@ class Solution {
         
         char[] res = s.toCharArray();
         while (low < high) {
-            if (vowels.contains(s.charAt(low))) {
-                while (low < high && !vowels.contains(s.charAt(high))) {
-                    res[high] = s.charAt(high);
-                    high--;
-                }
-                res[low] = s.charAt(high);
-                res[high] = s.charAt(low);
-            } else if (vowels.contains(s.charAt(high))) {
-                while (low < high && !vowels.contains(s.charAt(low))) {
-                    res[low] = s.charAt(low);
-                    low++;
-                }
-                res[low] = s.charAt(high);
-                res[high] = s.charAt(low);
-            } else {
-                res[low] = s.charAt(low);
-                res[high] = s.charAt(high);
-            }
+            while (low < high && !vowels.contains(s.charAt(high))) high--;
+            while (low < high && !vowels.contains(s.charAt(low))) low++;
+            res[low] = s.charAt(high);
+            res[high] = s.charAt(low);
             low++;
             high--;
         }
