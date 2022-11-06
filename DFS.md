@@ -24,10 +24,39 @@ dfs(i, j, matrix) {
 }
 ```
 
-## Examples 
+### Examples 
 - [Number of Islands](https://leetcode.com/problems/number-of-islands/)
   - DFS simplies marks visited grids; returning void
   - Count the number of DFS done
 - [Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
   - DFS returns the size of area 
   - Find the max area after DFSing all areas
+
+
+## States marking
+
+```
+L ← Empty list that will contain the sorted nodes
+while exists nodes without a permanent mark do
+    select an unmarked node n
+    visit(n)
+
+function visit(node n)
+    if n has a permanent mark then
+        return
+    if n has a temporary mark then
+        stop   (graph has at least one cycle)
+
+    mark n with a temporary mark
+
+    for each node m with an edge from n to m do
+        visit(m)
+
+    remove temporary mark from n
+    mark n with a permanent mark
+    add n to head of L
+ ```
+ 
+ ### Examples
+ -[Course Schedule](https://leetcode.com/problems/course-schedule/)
+ 
