@@ -26,14 +26,14 @@ class Solution {
     }
     
     public void dfs(int start) {
+        if (states[start] == 1) {
+            hasCycle = true;
+            return;
+        }
         if (hasCycle || states[start] == 2) return; //already taken, don't need to explore
         if (map.containsKey(start)) {
             states[start] = 1; //exploring
             for (int course: map.get(start)) {
-                if (states[course] == 1) {
-                    hasCycle = true;
-                    return;
-                }
                 dfs(course);
             }
         }
