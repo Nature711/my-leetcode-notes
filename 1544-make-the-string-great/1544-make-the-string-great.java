@@ -4,28 +4,18 @@ class Solution {
         if (s.length() < 2) return s;
         
         char[] chars = s.toCharArray();
-        Stack<Character> oldStack = new Stack<>();
-        for (char c: chars) oldStack.push(c);
+        Stack<Character> stack = new Stack<>();
         
-        Stack<Character> newStack = new Stack<>();
-        
-      
-        while (!oldStack.isEmpty()) {
-     
-            if (newStack.isEmpty()) newStack.push(oldStack.pop());
-
-            if (oldStack.isEmpty()) break;
-            char oldTop = oldStack.peek();
-            char newTop = newStack.peek();
-            if (Math.abs(oldTop - newTop) == 32) {
-                System.out.println(oldTop + "is a low/upper case of " + newTop);
-                oldStack.pop();
-                newStack.pop();
-            } else newStack.push(oldStack.pop());
-       
+        for (char c: chars) {
+            if (stack.isEmpty()) stack.push(c);
+            else {
+                char top = stack.peek();
+                if (Math.abs(top - c) == 32) stack.pop();
+                else stack.push(c);
+            }
         }
         StringBuilder sb = new StringBuilder();
-        while (!newStack.isEmpty()) sb.append(newStack.pop());
-        return sb.toString();
+        while (!stack.isEmpty()) sb.append(stack.pop());
+        return sb.reverse().toString();
     }
 }
