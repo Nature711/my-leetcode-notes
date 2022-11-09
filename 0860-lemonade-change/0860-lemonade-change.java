@@ -7,8 +7,7 @@ class Solution {
         for (int bill: bills) {
             wallet.put(bill, wallet.getOrDefault(bill, 0) + 1);
             int change = bill - 5;
-             System.out.println(change);
-             System.out.println(wallet);
+
             if (change == 0) continue;
             if (change == 15) {
                 if (wallet.containsKey(5) && wallet.get(5) > 0) {
