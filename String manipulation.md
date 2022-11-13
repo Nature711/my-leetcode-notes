@@ -1,3 +1,7 @@
+### Tools 
+- [Regexr online tester](https://regexr.com/)
+- [Regex cheatsheat](https://www.rexegg.com/regex-quickstart.html)
+
 ### Split sentence into word array
 
 - ```String.split(regex, limit)```
@@ -8,7 +12,7 @@
   - limit = 0 – the pattern will be applied as many times as possible, the resulting array can be of any size, and trailing empty strings will be discarded.
 ```
 String s = "This is a sentence";
-String words = s.split("\\s+");
+String words = s.split("\s+");
 words: ["This", "is", "a", "sentence"]
 ```
 
