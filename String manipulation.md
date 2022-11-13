@@ -23,3 +23,12 @@ String s = " This is a sentence ";
 String s1 = s.trim();
 s1: "This is a sentence"
 ```
+- ```String.replaceAll("^\\s+|\\s+$", "")```
+- \s -- matches any whitespaces
+- + -- 1 or more occurrences
+- \s+ -- matches any number of consecutive whitespaces
+- ^ -- matches the start of string
+- $ -- matches the end of string
+- ^\s+ -- matches any number of leading whitespaces
+- $\s+ -- matches any number of trailing whitespaces
+- | -- logical OR
