@@ -89,3 +89,29 @@ class Solution {
   }
 }
 ```
+
+## Optimized iterative
+![image](https://user-images.githubusercontent.com/77217430/201814608-3a0450ad-3e7f-4d91-88fd-8959fe163118.png)
+
+```
+    public int countDepth(TreeNode root) {
+        int depth = 0;
+        while (root != null) {
+            root = root.left;
+            depth++;
+        }
+        return depth;
+    }
+
+    public int countNodes(TreeNode root) {
+        if (root == null) return 0;
+        
+        int leftDepth = countDepth(root.left);
+        int rightDepth = countDepth(root.right);
+        
+        if (leftDepth == rightDepth + 1) 
+            return countNodes(root.left) + (int)Math.pow(2, rightDepth);
+        else return countNodes(root.right) + (int)Math.pow(2, leftDepth);
+    }
+    
+```
