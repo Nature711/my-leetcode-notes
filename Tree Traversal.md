@@ -81,11 +81,26 @@ class Solution {
 4   5   6
 ```
 - order: [4 2 5 1 3 6]
-- implementation: 
+- Recursive implementation: 
 ``` 
 dfs(root.left)
 print(root)
 dfs(root.right)
+```
+- Iterative implementation: 
+```
+Stack<TreeNode> stack = new Stack<>();
+TreeNode curr = root;
+
+while (curr != null || !stack.isEmpty()) {
+    while (curr != null) {
+        stack.push(curr);
+        curr = curr.left;
+    }
+    TreeNode popped = stack.pop();
+    nodes.add(popped.val);
+    curr = popped.right;
+}
 ```
 
 ## Postorder 
