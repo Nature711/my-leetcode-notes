@@ -14,20 +14,17 @@
  * }
  */
 class Solution {
-    List<Integer> nodes = new ArrayList<>();
     public boolean isValidBST(TreeNode root) {
-        
-        dfs(root);
-        
-        for (int i = 0; i < nodes.size() - 1; i++) if (nodes.get(i) >= nodes.get(i + 1)) return false;
-        return true;
+        if (root == null) return true;
+        return helper(root.left, Long.MIN_VALUE, root.val) && helper(root.right, root.val, Long.MAX_VALUE);
     }
     
-    public void dfs(TreeNode node) {
-        if (node == null) return;
-        dfs(node.left);
-        nodes.add(node.val);
-        dfs(node.right);
+    public boolean helper(TreeNode node, long low, long high) {
+        if (node == null) return true;
+        
+        if (node.val <= low || node.val >= high) return false;
+        
+        return helper(node.left, low, node.val) && helper(node.right, node.val, high);
     }
     
 }
