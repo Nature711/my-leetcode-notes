@@ -1,13 +1,20 @@
 class Solution {
+    String[] allStrs;
     public String longestCommonPrefix(String[] strs) {
-        int max = 0;
-        String benchmark = strs[0];
-        for (int i = 0; i < benchmark.length(); i++) {  
-            for (String str: strs) {
-                if (i == str.length() || str.charAt(i) != benchmark.charAt(i)) return benchmark.substring(0, max);
-            }
-            max++;
+        allStrs = strs;
+        int idx = helper(0, strs.length - 1);
+        return strs[0].substring(0, idx);
+    }
+    
+    public int helper(int low, int high) {
+        if (low == high) return allStrs[low].length();
+        int mid = low + (high - low) / 2;
+        int leftLongest = helper(low, mid);
+        int rightLongest = helper(mid + 1, high);
+        int minBetween = Math.min(leftLongest, rightLongest);
+        for (int i = 0; i < minBetween; i++) {
+            if (allStrs[low].charAt(i) != allStrs[high].charAt(i)) return i;
         }
-        return benchmark.substring(0, max);
+        return minBetween;
     }
 }
