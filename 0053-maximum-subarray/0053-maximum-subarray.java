@@ -1,17 +1,32 @@
 class Solution {
-
+    
+    int[] globalNums;
     public int maxSubArray(int[] nums) {
-        int n = nums.length;
-        int[] dp = new int[n];
-        dp[0] = nums[0];
-        int max = dp[0];
+        globalNums = nums;
+        return helper(0, nums.length - 1);
+    }
+    
+    public int helper(int low, int high) {
+        if (low == high) return globalNums[low];
         
-        for (int i = 1; i < n; i++) {
-            dp[i] = nums[i] + (dp[i - 1] <= 0 ? 0 : dp[i - 1]);
-            max = Math.max(max, dp[i]);
+        int mid = low + (high - low) / 2;
+        int leftMax = helper(low, mid);
+        int rightMax = helper(mid + 1, high);
+        
+        int currSumLeft = 0, maxFromLeft = 0, currSumRight = 0, maxFromRight = 0;
+        
+        for (int i = mid - 1; i >= low; i--) {
+            currSumLeft += globalNums[i];
+            maxFromLeft = Math.max(maxFromLeft, currSumLeft);
+        }
+        for (int i = mid + 1; i <= high; i++) {
+            currSumRight += globalNums[i];
+            maxFromRight = Math.max(maxFromRight, currSumRight);
         }
         
-        return max;
+        int middleMax = globalNums[mid] + maxFromLeft + maxFromRight;
+    
+        return Math.max(leftMax, Math.max(rightMax, middleMax));
     }
     
 }
