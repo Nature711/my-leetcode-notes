@@ -13,34 +13,27 @@ class Solution {
         if (list1 == null) return list2;
         if (list2 == null) return list1;
         
-        ListNode res = new ListNode();
-        ListNode headRef = res;
+        ListNode dummy = new ListNode();
         
-        ListNode ptr1 = list1, ptr2 = list2;
+        dummy.next = list1.val <= list2.val ? list1 : list2;
+        
+        ListNode prev = dummy, ptr1 = list1, ptr2 = list2;
+        
         while (ptr1 != null && ptr2 != null) {
             if (ptr1.val <= ptr2.val) {
-                res.next = new ListNode(ptr1.val);
+                prev.next = ptr1;
+                prev = ptr1;
                 ptr1 = ptr1.next;
             } else {
-                res.next = new ListNode(ptr2.val);
+                prev.next = ptr2;
+                prev = ptr2; 
                 ptr2 = ptr2.next;
             }
-            res = res.next;
         }
         
-        while (ptr1 != null) {
-            res.next = new ListNode(ptr1.val);
-            ptr1 = ptr1.next;
-            res = res.next;
-        }
+        if (ptr1 != null) prev.next = ptr1;
+        if (ptr2 != null) prev.next = ptr2;
         
-        
-        while (ptr2 != null) {
-            res.next = new ListNode(ptr2.val);
-            ptr2 = ptr2.next;
-            res = res.next;
-        }
-        
-        return headRef.next;
+        return dummy.next;
     }
 }
