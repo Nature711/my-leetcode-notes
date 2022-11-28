@@ -13,28 +13,13 @@ class Solution {
         if (list1 == null) return list2;
         if (list2 == null) return list1;
         
-        ListNode dummy = new ListNode();
-        
-        dummy.next = list1.val <= list2.val ? list1 : list2;
-        
-        ListNode prev = dummy, ptr1 = list1, ptr2 = list2;
-        
-        while (ptr1 != null && ptr2 != null) {
-            if (ptr1.val <= ptr2.val) {
-                prev.next = ptr1;
- 
-                ptr1 = ptr1.next;
-            } else {
-                prev.next = ptr2;
-          
-                ptr2 = ptr2.next;
-            }
-            prev = prev.next;
+        if (list1.val <= list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
         }
-        
-        if (ptr1 != null) prev.next = ptr1;
-        if (ptr2 != null) prev.next = ptr2;
-        
-        return dummy.next;
+
     }
 }
