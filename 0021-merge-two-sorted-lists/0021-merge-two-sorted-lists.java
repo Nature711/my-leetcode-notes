@@ -22,13 +22,14 @@ class Solution {
         while (ptr1 != null && ptr2 != null) {
             if (ptr1.val <= ptr2.val) {
                 prev.next = ptr1;
-                prev = ptr1;
+ 
                 ptr1 = ptr1.next;
             } else {
                 prev.next = ptr2;
-                prev = ptr2; 
+          
                 ptr2 = ptr2.next;
             }
+            prev = prev.next;
         }
         
         if (ptr1 != null) prev.next = ptr1;
