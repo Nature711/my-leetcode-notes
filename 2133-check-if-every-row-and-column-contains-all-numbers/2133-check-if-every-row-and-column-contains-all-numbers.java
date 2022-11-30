@@ -11,15 +11,15 @@ class Solution {
         
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                rows.get(i).add(matrix[i][j]);
-                cols.get(j).add(matrix[i][j]);
+                if (rows.get(i).add(matrix[i][j]) == false) return false;
+                if (cols.get(j).add(matrix[i][j]) == false) return false;
             }
         }
         
-        for (int i = 0; i < n; i++) {
-            if (rows.get(i).size() != n) return false;
-            if (cols.get(i).size() != n) return false;
-        }
+//         for (int i = 0; i < n; i++) {
+//             if (rows.get(i).size() != n) return false;
+//             if (cols.get(i).size() != n) return false;
+//         }
         
         return true;
     }
