@@ -1,16 +1,24 @@
+## note
+- what's special about this question is that we don't actually need to keep track of a ```visited``` array 
+  - every time as we visit a node, we mark it with ```destColor```, which is effectively marking it as "visited"
+  - since in the condition check for whether we want to visit a node or not, we do so by checking if the color of the node we're about to visit is the same as the srcColor, if not we don't visit
+  - if a node it's visited then we know it'll be marked with destColor, which is different from the srcColor...
+  - wait... to make sure this (that destColor != srcColor) we do an additional check at the very beginning :D
+ 
 ## DFS
 
 ```
 class Solution {
     int[][] globalImage;
-    boolean[][] visited;
+    // boolean[][] visited;
     int destColor, srcColor;
     int m, n;
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        if (image[sr][sc] == color) return image;
         globalImage = image;
         m = image.length;
         n = image[0].length;
-        visited = new boolean[m][n];
+        //visited = new boolean[m][n];
         destColor = color;
         srcColor = image[sr][sc];
         dfs(sr, sc);
@@ -18,9 +26,9 @@ class Solution {
     }
     
     public void dfs(int r, int c) {
-        if (r < 0 || r == m || c < 0 || c == n || visited[r][c] || globalImage[r][c] != srcColor) return;
+        if (r < 0 || r == m || c < 0 || c == n || globalImage[r][c] != srcColor) return;
         globalImage[r][c] = destColor;
-        visited[r][c] = true;
+        // visited[r][c] = true;
         dfs(r - 1, c);
         dfs(r + 1, c);
         dfs(r, c - 1);
