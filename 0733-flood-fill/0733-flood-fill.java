@@ -15,15 +15,15 @@ class Solution {
                 int[] curr = queue.poll();
                 int r = curr[0];
                 int c = curr[1];
+                image[r][c] = color;
           
-                
                 for (int[] direction: directions) {
                     int nextR = r + direction[0];
                     int nextC = c + direction[1];
                     if (nextR >= 0 && nextR < m && nextC >= 0 && nextC < n && !visited[nextR][nextC] & image[nextR][nextC] == srcColor) { 
                         queue.offer(new int[] {nextR, nextC});
                         visited[nextR][nextC] = true;
-                        image[nextR][nextC] = color;
+                        
                     }
                 }
             }
