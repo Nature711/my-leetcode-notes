@@ -7,6 +7,7 @@ class Solution {
         boolean[][] visited = new boolean[m][n];
         Queue<int[]> queue = new LinkedList<>();
         queue.offer(new int[] {sr, sc});
+        image[sr][sc] = color;
         
         while (!queue.isEmpty()) {
             int size = queue.size();
@@ -14,7 +15,7 @@ class Solution {
                 int[] curr = queue.poll();
                 int r = curr[0];
                 int c = curr[1];
-                image[r][c] = color;
+          
                 
                 for (int[] direction: directions) {
                     int nextR = r + direction[0];
@@ -22,6 +23,7 @@ class Solution {
                     if (nextR >= 0 && nextR < m && nextC >= 0 && nextC < n && !visited[nextR][nextC] & image[nextR][nextC] == srcColor) { 
                         queue.offer(new int[] {nextR, nextC});
                         visited[nextR][nextC] = true;
+                        image[nextR][nextC] = color;
                     }
                 }
             }
