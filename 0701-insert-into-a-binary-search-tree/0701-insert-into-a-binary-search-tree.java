@@ -16,22 +16,11 @@
 class Solution {
     public TreeNode insertIntoBST(TreeNode root, int val) {
         TreeNode newNode = new TreeNode(val);
+        
         if (root == null) return newNode;
-        TreeNode curr = root;
         
-        while (true) {
-            if (val < curr.val && curr.left == null) {
-                curr.left = newNode;
-                break;
-            }
-            else if (val > curr.val && curr.right == null) {
-                curr.right = newNode;
-                break;
-            }
-            else if (curr.val < val) curr = curr.right;
-            else if (curr.val > val) curr = curr.left;
-        }
-        
+        if (val > root.val) root.right = insertIntoBST(root.right, val);
+        else root.left = insertIntoBST(root.left, val);
         return root;
     }
 }
