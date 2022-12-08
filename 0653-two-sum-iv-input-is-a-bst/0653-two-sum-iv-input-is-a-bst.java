@@ -15,34 +15,26 @@
  */
 class Solution {
     public boolean findTarget(TreeNode root, int k) {
-        List<Integer> inorder = inorderTraversal(root);
+        HashSet<Integer> seen = new HashSet<>();
         
-        int low = 0, high = inorder.size() - 1;
-        while (low < high) {
-            int sum = inorder.get(low) + inorder.get(high);
-            if (sum == k) return true;
-            else if (sum < k) low++;
-            else high--;
+        Queue<TreeNode> queue = new LinkedList<>();
+        
+        queue.add(root);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = queue.poll();
+                if (seen.contains(k - curr.val)) return true;
+                seen.add(curr.val);
+                if (curr.left != null) queue.add(curr.left);
+                if (curr.right != null) queue.add(curr.right);
+            }
         }
+        
         return false;
     }
-    
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = root;
 
-        while (curr != null || !stack.isEmpty()) {
-            while (curr != null) {
-                stack.push(curr);
-                curr = curr.left;
-            }        
-            curr = stack.pop();
-            res.add(curr.val);
-            curr = curr.right;   
-        }
-        return res;
-    }
     
     
 }
