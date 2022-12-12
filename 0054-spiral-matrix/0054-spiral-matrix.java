@@ -8,35 +8,35 @@ class Solution {
         
         while (res.size() < count) {
             
-            if (top == bottom) {
-                while (left <= right) res.add(matrix[top][left++]);
-                break;
-            }
+//             if (top == bottom) {
+//                 while (left <= right) res.add(matrix[top][left++]);
+//                 break;
+//             }
             
-            if (left == right) {
-                while (top <= bottom) res.add(matrix[top++][left]);
-                break;
-            }
+//             if (left == right) {
+//                 while (top <= bottom) res.add(matrix[top++][left]);
+//                 break;
+//             }
             
             j = left;
-            while (res.size() < count && j < right) {
+            while (res.size() < count && j <= right) {
                 res.add(matrix[top][j]);
                 j++;
             }
            
-            i = top;
-            while (res.size() < count && i < bottom) {
+            i = top + 1;
+            while (res.size() < count && i <= bottom) {
                 res.add(matrix[i][right]);
                 i++;
             }
                
-            j = right;
-            while (res.size() < count && j > left) {
+            j = right - 1;
+            while (res.size() < count && j >= left) {
                 res.add(matrix[bottom][j]);
                 j--;
             }
               
-            i = bottom;
+            i = bottom - 1;
             while (res.size() < count && i > top) {
                 res.add(matrix[i][left]);
                 i--;
