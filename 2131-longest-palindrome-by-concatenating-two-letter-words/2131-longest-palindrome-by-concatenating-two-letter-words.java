@@ -4,15 +4,15 @@ class Solution {
         HashMap<String, Integer> map = new HashMap<>();
         int res = 0;
         for (String word: words) {
-            if (map.containsKey(word)) {
+            String rev = word.substring(1,2) + word.substring(0,1);
+            if (map.containsKey(rev)) {
                 //somewhere before we've encountered the reverse of this word
                 res += 4;
-                int rem = map.get(word) - 1;
-                if (rem == 0) map.remove(word);
-                else map.put(word, rem);
+                int rem = map.get(rev) - 1;
+                if (rem == 0) map.remove(rev);
+                else map.put(rev, rem);
             } else {
-                String rev = word.substring(1,2) + word.substring(0,1);
-                map.put(rev, map.getOrDefault(rev, 0) + 1);
+                map.put(word, map.getOrDefault(word, 0) + 1);
             }
         }
         
