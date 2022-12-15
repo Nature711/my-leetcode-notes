@@ -11,59 +11,44 @@
 class Solution {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
-        
-        ListNode mid = getMid(head);
-        ListNode leftList = sortList(head);
-        ListNode rightList = sortList(mid);
-        
-        return merge(leftList, rightList);
+        ListNode mid = findMiddle(head);
+        ListNode midNext = mid.next;
+        mid.next = null; //split in mid 
+        ListNode firstSortedHalf = sortList(head); //recursively sort first half
+        ListNode secondSortedHalf = sortList(midNext); //recursively sort second half
+        return mergeSortedLists(firstSortedHalf, secondSortedHalf);
     }
     
-    // public ListNode findMiddle(ListNode start) {
-    //     if (start == null) return start;
-    //     ListNode fast = start.next, slow = start;
-    //     while (fast != end && fast.next != end) {
-    //         fast = fast.next.next;
-    //         slow = slow.next;
-    //     }
-    //     System.out.println(start.val + " has middle " + slow.val);
-    //     return slow;
-    // }
-    
-    ListNode getMid(ListNode head) {
-        ListNode midPrev = null;
-        while (head != null && head.next != null) {
-            midPrev = (midPrev == null) ? head : midPrev.next;
-            head = head.next.next;
-        }
-        ListNode mid = midPrev.next;
-        midPrev.next = null;
-        return mid;
-    }
-    
-     public ListNode merge(ListNode list1, ListNode list2) {
-        if (list1 == null) return list2;
-        if (list2 == null) return list1;
-        
+    public ListNode findMiddle(ListNode head) { //need to be left-biased
         ListNode dummy = new ListNode();
-        System.out.println(list1.val + " merged with " + list2.val);
+        dummy.next = head;
+        ListNode fast = head, slow = dummy;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+    
+    public ListNode mergeSortedLists(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        ListNode dummy = new ListNode(), curr = dummy;
         
-        ListNode prev = dummy, ptr1 = list1, ptr2 = list2;
-        
-        while (ptr1 != null && ptr2 != null) {
-            if (ptr1.val <= ptr2.val) {
-                prev.next = ptr1;
-                ptr1 = ptr1.next;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
             } else {
-                prev.next = ptr2;
-                ptr2 = ptr2.next;
+                curr.next = l2;
+                l2 = l2.next;
             }
-            prev = prev.next;
+            curr = curr.next;
         }
         
-        if (ptr1 != null) prev.next = ptr1;
-        if (ptr2 != null) prev.next = ptr2;
-        
+        if (l1 != null) curr.next = l1;
+        if (l2 != null) curr.next = l2;
         return dummy.next;
     }
+ 
 }
