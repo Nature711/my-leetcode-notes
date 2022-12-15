@@ -1,68 +1,21 @@
 class Solution {
+    String[] allStrs;
     public String longestCommonPrefix(String[] strs) {
-        Trie trie = new Trie();
-        for (String str: strs) {
-            if (str.length() == 0) return "";
-            trie.insert(str);
-        }
-        return trie.findLCP();
+        allStrs = strs;
+        return longestHelper(0, strs.length - 1);
     }
     
-    
-    
-    
-    
-    class Node {
-        char c;
-        Node[] children = new Node[27];
-        boolean isTerminating = false;
-
-        public Node() {this.c = 'R';}
-        public Node(char c) {this.c = c;}
-    }
-    
-    class Trie {
-        Node root;
-
-        public Trie() { this.root = new Node(); }
-
-        public void insert(String word) {
-            Node currNode = root;
-            for (int i = 0; i < word.length(); i++) {
-                if (currNode.children[word.charAt(i) - 'a'] == null) {
-                    currNode.children[word.charAt(i) - 'a'] = new Node(word.charAt(i));
-                } 
-                currNode = currNode.children[word.charAt(i) - 'a']; 
-                if (i == word.length() - 1) currNode.isTerminating = true;
-            }
+    public String longestHelper(int low, int high) {
+        if (low == high) return allStrs[low];
+        int mid = low + (high - low) / 2;
+        String s1 = longestHelper(low, mid);
+        String s2 = longestHelper(mid + 1, high);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Math.min(s1.length(), s2.length()); i++) {
+            if (s1.charAt(i) != s2.charAt(i)) break;
+            sb.append(s1.charAt(i));
         }
-        
-        public String findLCP() {
-            StringBuilder sb = new StringBuilder();
-            Node currNode = root;
-            while (currNode != null) {
-                int count = 0;
-                int next = -1;
-                char c = 'R';
-                int flag = 0;
-                for (int i = 0; i < 26; i++) {
-                    if (currNode.children[i] != null) {
-                        next = i;
-                        c = (char) (i + 97);
-                        count++;
-                        if (currNode.children[i].isTerminating) flag = 1;
-                    }
-                    if (count > 1) return sb.toString();
-                }
-                 
-                if (count == 0) return sb.toString();
-                else sb.append(c);
-                if (flag == 1) break;
-                currNode = currNode.children[next];
-            }
-            return sb.toString();
-        }
+        return sb.toString();
     }
-    
     
 }
