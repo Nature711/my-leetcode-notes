@@ -15,6 +15,7 @@
  */
 class Solution {
     int maxDiameter = 0;
+    HashMap<TreeNode, Integer> memo = new HashMap<>();
     public int diameterOfBinaryTree(TreeNode root) {
         maxDiameter(root);
         return maxDiameter;
@@ -22,10 +23,12 @@ class Solution {
     
     public int maxDiameter(TreeNode root) {
         if (root == null) return 0;
+        if (memo.containsKey(root)) return memo.get(root);
         int currDiameter = 2 + maxDepth(root.left) + maxDepth(root.right);
         maxDiameter(root.left);
         maxDiameter(root.right);
         maxDiameter = Math.max(maxDiameter, currDiameter);
+        memo.put(root, currDiameter);
         return currDiameter;
     }
     
