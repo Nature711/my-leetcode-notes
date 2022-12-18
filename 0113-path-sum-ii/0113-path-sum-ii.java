@@ -27,19 +27,15 @@ class Solution {
     public void dfs(TreeNode root, int rem, List<Integer> currPath) {
         if (root == null) return;
         
+        currPath.add(root.val);
+        
         if (root.left == null && root.right == null && rem == root.val) {
-            currPath.add(root.val);
             paths.add(new ArrayList<>(currPath));
-            currPath.remove(currPath.size() - 1);
-            return;
         }
-        
-        currPath.add(root.val);
+ 
         dfs(root.left, rem - root.val, currPath);
-        currPath.remove(currPath.size() - 1);
-        
-        currPath.add(root.val);
         dfs(root.right, rem - root.val, currPath);
+        
         currPath.remove(currPath.size() - 1);
     }
     
