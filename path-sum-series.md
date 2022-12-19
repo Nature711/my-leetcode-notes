@@ -67,7 +67,17 @@ public void preorder(TreeNode root) {
     currSum -= root.val;
 }
 ```
-
+- similar idea as prefix sum 
+  --> finding the number of subarrays with sum equals target
+  --> hashmap of prefix sum to its occurence
+  --> 1D array: contiguous
+  --> binary tree: contiguous means having a downward path; need to backtrack (undo) when returning 
+  
+![image](https://user-images.githubusercontent.com/77217430/208392529-f45861f9-feb7-46c4-91ea-b3226bf850d3.png)
+![image](https://user-images.githubusercontent.com/77217430/208392588-87b91f5d-db5d-4aff-be25-2f1536f964ea.png)
+![image](https://user-images.githubusercontent.com/77217430/208392646-022b243c-bd31-4309-9c76-2cd1dcd370fc.png)
+![image](https://user-images.githubusercontent.com/77217430/208392689-eea6bd9a-2d6a-4c7e-ac49-700044c7c17e.png)
+![image](https://user-images.githubusercontent.com/77217430/208392737-32edd319-ad41-46f2-98d4-b62b61228b65.png)
 
 ## Iterative
 
