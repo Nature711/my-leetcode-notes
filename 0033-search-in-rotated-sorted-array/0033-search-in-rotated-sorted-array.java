@@ -7,14 +7,14 @@ class Solution {
             if (nums[mid] == target) return mid;
             if (nums[low] <= nums[mid]) {
                 //left side sorted
-                if (target >= nums[low] && target <= nums[mid]) {
-                    //target within left sorted side, apply regular binary search
+                if (target >= nums[low] && target < nums[mid]) {
+                    //target within left sorted side
                     high = mid - 1;
                 } else low = mid + 1;
             } else {
                 //right side sorted
-                if (target >= nums[mid] && target <= nums[high]) {
-                    //target within left sorted side, apply regular binary search
+                if (target > nums[mid] && target <= nums[high]) {
+                    //target within left sorted side
                     low = mid + 1; 
                 } else high = mid - 1;
             }
