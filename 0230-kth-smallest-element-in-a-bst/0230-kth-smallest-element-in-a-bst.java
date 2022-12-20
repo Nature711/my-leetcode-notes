@@ -14,7 +14,7 @@
  * }
  */
 class Solution {
-    int res, count;
+    int res = -1, count;
     public int kthSmallest(TreeNode root, int k) {
         count = k;
         preorder(root);
@@ -22,7 +22,7 @@ class Solution {
     }
     
     public void preorder(TreeNode root) {
-        if (root == null) return;
+        if (res != -1 || root == null) return;
         preorder(root.left);
         count--;
         if (count == 0) res = root.val;
