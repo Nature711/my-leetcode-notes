@@ -1,37 +1,44 @@
 class Solution {
-    public int numBusesToDestination(int[][] routes, int S, int T) {
-       HashSet<Integer> visited = new HashSet<>();
-       Queue<Integer> q = new LinkedList<>();
-       HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
-       int ret = 0; 
+    
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        if (source == target) return 0;
         
-       if (S==T) return 0; 
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+    
+        //for each stop, record the buses that stop at it
+        for (int bus = 0; bus < routes.length; bus++) {
+            for (int station: routes[bus]) {
+                if (map.containsKey(station)) map.get(station).add(bus);
+                else {
+                    List<Integer> buses = new ArrayList<>();
+                    buses.add(bus);
+                    map.put(station, buses);
+                }
+            }
+        }  
+        int numBuses = 1;
+        HashSet<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(source);
         
-       for(int i = 0; i < routes.length; i++){
-            for(int j = 0; j < routes[i].length; j++){
-                ArrayList<Integer> buses = map.getOrDefault(routes[i][j], new ArrayList<>());
-                buses.add(i);
-                map.put(routes[i][j], buses);                
-            }       
-        }
-                
-       q.offer(S); 
-       while (!q.isEmpty()) {
-           int len = q.size();
-           ret++;
-           for (int i = 0; i < len; i++) {
-               int cur = q.poll();
-               ArrayList<Integer> buses = map.get(cur);
-               for (int bus: buses) {
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int station = queue.poll();
+                List<Integer> busesAtStation = map.get(station);
+                for (int bus: busesAtStation) {
                     if (visited.contains(bus)) continue;
                     visited.add(bus);
-                    for (int j = 0; j < routes[bus].length; j++) {
-                        if (routes[bus][j] == T) return ret;
-                        q.offer(routes[bus][j]);  
-                   }
-               }
-           }
+                    for (int reachableStation: routes[bus]) {
+                        if (reachableStation == target) return numBuses;
+                        queue.add(reachableStation);
+                    }
+                }
+            }
+            numBuses++;
         }
+        
         return -1;
+        
     }
 }
