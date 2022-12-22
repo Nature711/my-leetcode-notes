@@ -1,38 +1,45 @@
 class Solution {
-    int[] states;
+    
     HashMap<Integer, List<Integer>> map = new HashMap<>();
+    int[] status; //0 for not visited, 1 for visting, 2 for visited
+    
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        states = new int[numCourses]; //0 for not explored, 1 for exploroing, 2 for explored
+        status = new int[numCourses];
         
-        for (int[] prerequisite: prerequisites) {
-            if (!map.containsKey(prerequisite[0])) map.put(prerequisite[0], new ArrayList<>());
-            map.get(prerequisite[0]).add(prerequisite[1]);
+        for (int[] pre: prerequisites) { //construct prerequiste map
+            if (map.containsKey(pre[0])) map.get(pre[0]).add(pre[1]);
+            else {
+                List<Integer> list = new ArrayList<>();
+                list.add(pre[1]);
+                map.put(pre[0], list);
+            }
         }
         
         for (int i = 0; i < numCourses; i++) {
-            if (states[i] == 0) {
+            if (status[i] == 0) {
                 if (!dfs(i)) return false;
             }
         }
         
         return true;
+        
     }
-    
-    
+   
     public boolean dfs(int start) {
+        if (status[start] == 2) return true;
+        if (status[start] == 1) return false;
         
-        if (states[start] == 2) return true;
-        // if (states[start] == 1) return false; //find cycle
-        if (!map.containsKey(start)) return true; //no dependency
+        status[start] = 1;
         
-        states[start] = 1; //exploring
-         
-        for (int course: map.get(start)) {
-            if (states[course] == 1) return false;
-            if (!dfs(course)) return false;
+        
+        if (map.containsKey(start)) {
+            List<Integer> prerequisites = map.get(start);
+            for (int pre: prerequisites) {
+                if (!dfs(pre)) return false;
+            }
         }
         
-        states[start] = 2; //explored
+        status[start] = 2;
         return true;
     }
 } 
