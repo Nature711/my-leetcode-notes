@@ -1,45 +1,54 @@
 class Solution {
-    int[] states;
     HashMap<Integer, List<Integer>> map = new HashMap<>();
-    List<Integer> res = new ArrayList<>();
-    Stack<Integer> stack = new Stack<>();
-    boolean hasCycle = false;
+    int[] status; //0 for not visited, 1 for visting, 2 for visited
+    List<Integer> order = new ArrayList<>();
     
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        
-        if (numCourses == 0) return new int[0];
-        
-        for (int[] prerequisite: prerequisites) {
-            if (!map.containsKey(prerequisite[0])) map.put(prerequisite[0], new ArrayList<>());
-            map.get(prerequisite[0]).add(prerequisite[1]);
-        }
-        states = new int[numCourses];
-        
-        for (int i = 0; i < numCourses; i++) {
-            if (states[i] == 0) dfs(i);
-            if (hasCycle) return new int[0];
-        }
-        
-        int[] result = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) result[i] = res.get(i);
-        return result;
+        if (!canFinish(numCourses, prerequisites)) return new int[]{};
+        int[] res = new int[numCourses];
+        for (int i = 0; i < res.length; i++) res[i] = order.get(i);
+        return res;
     }
     
-    public void dfs(int start) {
-        if (states[start] == 1) {
-            hasCycle = true;
-            return;
-        }
-        if (hasCycle || states[start] == 2) return; //already taken, don't need to explore
-        if (map.containsKey(start)) {
-            states[start] = 1; //exploring
-            for (int course: map.get(start)) {
-                dfs(course);
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        status = new int[numCourses];
+        
+        for (int[] pre: prerequisites) { //construct prerequiste map
+            if (map.containsKey(pre[0])) map.get(pre[0]).add(pre[1]);
+            else {
+                List<Integer> list = new ArrayList<>();
+                list.add(pre[1]);
+                map.put(pre[0], list);
             }
         }
-        states[start] = 2; //explored
-        res.add(start);
+        
+        for (int i = 0; i < numCourses; i++) {
+            if (status[i] == 0) {
+                if (!dfs(i)) return false;
+            }
+        }
+        
+        return true;
+        
     }
-    
+   
+    public boolean dfs(int start) {
+        if (status[start] == 2) return true;
+        if (status[start] == 1) return false;
+        
+        status[start] = 1;
+        
+        
+        if (map.containsKey(start)) {
+            List<Integer> prerequisites = map.get(start);
+            for (int pre: prerequisites) {
+                if (!dfs(pre)) return false;
+            }
+        }
+        
+        status[start] = 2;
+        order.add(start);
+        return true;
+    }
 }
     
