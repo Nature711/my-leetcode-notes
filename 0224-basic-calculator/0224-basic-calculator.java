@@ -1,78 +1,58 @@
 class Solution {
-
-    public int evaluateExpr(Stack<Object> stack) {
-        
-        // If stack is empty or the expression starts with
-        // a symbol, then append 0 to the stack.
-        // i.e. [1, '-', 2, '-'] becomes [1, '-', 2, '-', 0]
-        if (stack.empty() || !(stack.peek() instanceof Integer)) {
-            stack.push(0);
-        }
-
-        int res = (int) stack.pop();
-
-        // Evaluate the expression till we get corresponding ')'
-        while (!stack.empty() && !((char) stack.peek() == ')')) {
-
-            char sign = (char) stack.pop();
-
-            if (sign == '+') {
-                res += (int) stack.pop();
-            } else {
-                res -= (int) stack.pop();
-            }
-        }
-        return res;
-    }
-
     public int calculate(String s) {
-
-        int operand = 0;
-        int n = 0;
-        Stack<Object> stack = new Stack<Object>();
-
-        for (int i = s.length() - 1; i >= 0; i--) {
-
-            char ch = s.charAt(i);
-
-            if (Character.isDigit(ch)) {
-
-                // Forming the operand - in reverse order.
-                operand = (int) Math.pow(10, n) * (int) (ch - '0') + operand;
-                n += 1;
-
-            } else if (ch != ' ') {
-                if (n != 0) {
-
-                    // Save the operand on the stack
-                    // As we encounter some non-digit.
-                    stack.push(operand);
-                    n = 0;
-                    operand = 0;
-
-                }
-                if (ch == '(') {
-
-                    int res = evaluateExpr(stack);
-                    stack.pop();
-
-                    // Append the evaluated result to the stack.
-                    // This result could be of a sub-expression within the parenthesis.
-                    stack.push(res);
-
+        Stack<String> stack = new Stack<>();
+        s = s.replaceAll("\\s+", "");
+        int i = 0, j = 0;
+        
+        while (i < s.length()) {
+                
+            if (s.charAt(i) == ')') {
+                
+                List<String> expression = new ArrayList<>();
+                while (!stack.peek().equals("(")) expression.add(stack.pop()); 
+                stack.pop();
+                Integer partialRes = eval(expression);
+                stack.push(partialRes.toString());
+                i++;
+            } else {
+                if (Character.isDigit(s.charAt(i))) {
+                    j = i;
+                    while (j < s.length() && Character.isDigit(s.charAt(j))) j++;
+                    stack.push(s.substring(i, j));
+                    i = j;
                 } else {
-                    // For other non-digits just push onto the stack.
-                    stack.push(ch);
+                    stack.push(s.substring(i, i + 1));
+                    i++;
                 }
             }
-        }
 
-        //Push the last operand to stack, if any.
-        if (n != 0) {
-            stack.push(operand);
+            //System.out.println("currStack " + stack);
         }
+        
+        List<String> exp = new ArrayList<>();
+        while (!stack.isEmpty()) exp.add(stack.pop());
+        return eval(exp);
+    }
+    
+    public int eval(List<String> expression) {
+        
+        
+        String last = expression.get(expression.size() - 1);
+        if (last.equals("-")) expression.add("0");
+        //System.out.println("calculate" + expression);
+        int n = expression.size();
 
-        // Evaluate any left overs in the stack.
-        return evaluateExpr(stack);
+        int res = Integer.parseInt(expression.get(n - 1));
+        int numP = n - 3, opP = n - 2;
+        while (numP >= 0 && opP >= 0) {
+            String op = expression.get(opP);
+            int num = Integer.parseInt(expression.get(numP));
+            if (op.equals("+")) res += num;
+            else res -= num;
+            numP -= 2;
+            opP -= 2;
+        }
+        //System.out.println("calculate " + expression + " gets " + res);
+        return res;
     }
 }
