@@ -1,41 +1,75 @@
 class Solution {
-    HashSet<Integer> visited = new HashSet<>();
-    List<HashSet<Integer>> graph = new ArrayList<>();
-    
+  
     public int findCircleNum(int[][] isConnected) {
         
+        
         int n = isConnected.length;
-        int count = 0;
-        
-        //construct graph
-        for (int i = 0; i < n; i++) graph.add(new HashSet<>());
-        
+
+        UnionFind uf = new UnionFind(n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (isConnected[i][j] == 1 && i != j) {
-                    graph.get(i).add(j);
-                    graph.get(j).add(i);
-                }
-            }
-        }
-
-        //dfs from each city
-        for (int i = 0; i < n; i++) {
-            if (!visited.contains(i)) {
-                dfs(i);
-                count++;
+                if (isConnected[i][j] == 1 && i != j) uf.union(i, j);
             }
         }
         
-        //return result
-        return count;
-    }
-    
-    public void dfs(int start) {
-        visited.add(start);
-        HashSet<Integer> neighbors = graph.get(start);
-        for (int n: neighbors) if (!visited.contains(n)) dfs(n);
+        return uf.numOfComponets;
+        
     }
     
     
+    
+    
+    
+}
+
+public class UnionFind {
+    private int[] parents;
+    private int[] size;
+    int numOfComponets = 0;
+
+    public UnionFind(int n) {
+        parents = new int[n];
+        size = new int[n];
+        numOfComponets = n;
+        for (int i = 0; i < parents.length; i++) {
+            parents[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    public int find(int cur) {
+        int root = cur;
+        while (root != parents[root]) {
+            root = parents[root];
+        }
+        // Path Compression
+        while (cur != root) {
+            int preParent = parents[cur];
+            parents[cur] = root;
+            cur = preParent;
+        }
+        return root;
+    }
+
+    public int findComponentSize(int cur) {
+        int parent = find(cur);
+        return size[parent];
+    }
+
+    public void union(int node1, int node2) {
+        int node1Parent = find(node1);
+        int node2Parent = find(node2);
+
+        if (node1Parent == node2Parent)
+            return;
+
+        if (size[node1Parent] > size[node2Parent]) {
+            parents[node2Parent] = node1Parent;
+            size[node1Parent] += size[node2Parent];
+        } else {
+            parents[node1Parent] = node2Parent;
+            size[node2Parent] += size[node1Parent];
+        }
+        numOfComponets--;
+    }
 }
