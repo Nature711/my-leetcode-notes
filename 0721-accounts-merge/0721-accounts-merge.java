@@ -13,7 +13,7 @@ class Solution {
         UnionFind uf = new UnionFind(n);
         
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 List<String> acc1 = accounts.get(i);
                 List<String> acc2 = accounts.get(j);
                 //System.out.println("acc1 is " + acc1.get(0) + " and acc2 is " + acc2.get(0));
@@ -29,7 +29,7 @@ class Solution {
         }
         
         for (int i = n - 1; i >= 0; i--) {
-            for (int j = n - 1; j >- 0; j--) {
+            for (int j = i - 1; j >= 0; j--) {
                 List<String> acc1 = accounts.get(i);
                 List<String> acc2 = accounts.get(j);
                 //System.out.println("acc1 is " + acc1.get(0) + " and acc2 is " + acc2.get(0));
