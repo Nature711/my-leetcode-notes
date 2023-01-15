@@ -15,31 +15,44 @@
  */
 class Solution {
     
-    int target, count = 0;  
-    long currSum = 0;
-    HashMap<Long, Integer> map = new HashMap<>();
-    
     public int pathSum(TreeNode root, int targetSum) {
-        target = targetSum;
-
-        map.put(currSum, 1);
-        preorder(root);
+        HashMap<Long, Integer> map = new HashMap<>(); 
+        //a map of the cumulative sum and the number of times it had occured
         
+        
+        long currSum = 0;
+        int count = 0;
+        map.put(currSum, 1); //at root
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        Set<TreeNode> peeked = new HashSet<>();
+
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                //System.out.println("add " + curr.val + " to sum");
+                currSum += curr.val;
+                map.put(currSum, map.getOrDefault(currSum, 0) + 1);
+                if (map.containsKey(currSum - targetSum)) {
+                    count += map.get(currSum - targetSum);
+                    if (targetSum == 0) count--;
+                }
+                //System.out.println(currSum + " " + map);
+                curr = curr.left;
+            }        
+            curr = stack.peek();
+            if (!peeked.add(curr)) {
+                TreeNode r = stack.pop();
+                map.put(currSum, map.get(currSum) - 1);
+                currSum -= r.val; 
+                //System.out.println("remove " +r.val + " from sum");
+                curr = null;
+                //System.out.println(currSum + " " + map);
+            } else curr = curr.right; 
+        }
         return count;
     }
     
-    public void preorder(TreeNode root) {
-        if (root == null) return;
-        currSum += root.val;
-        if (map.containsKey(currSum - target)) {
-            count += map.get(currSum - target);
-        }
-        map.put(currSum, map.getOrDefault(currSum, 0) + 1);
-        preorder(root.left);
-        preorder(root.right);
-        map.put(currSum, map.get(currSum) - 1);
-        currSum -= root.val;
-        
-    }
-    
+   
+
 }
