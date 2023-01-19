@@ -14,23 +14,23 @@
  * }
  */
 class Solution {
+    List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
-        if (root == null) return res;
-        Queue<TreeNode> q = new LinkedList<>();
-        
-        q.add(root);
-        while (!q.isEmpty()) {
-            int size = q.size();
-            List<Integer> level = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = q.poll();
-                level.add(node.val);
-                if (node.left != null) q.add(node.left);
-                if (node.right != null) q.add(node.right);
-            }
-            res.add(level);
-        }
+        dfs(root, 0);
         return res;
+    }
+    
+    public void dfs(TreeNode root, int level) {
+        if (root == null) return;
+        
+        if (level >= res.size()) {
+            List<Integer> currLevel = new ArrayList<>();
+            currLevel.add(root.val);
+            res.add(level, currLevel);
+        } else {
+            res.get(level).add(root.val);
+        }
+        dfs(root.left, level + 1);
+        dfs(root.right, level + 1);
     }
 }
