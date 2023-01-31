@@ -15,7 +15,7 @@ class Solution {
       
         boolean flag = false;
         for (int i = 1; i < n; i++) {
-            if (canPartition(s.substring(0, i))
+            if (dictionary.contains(s.substring(0, i))
                 && canPartition(s.substring(i, n))) {
                 flag = true;
                 break;
