@@ -1,21 +1,24 @@
 class Solution {
     List<List<Integer>> res = new ArrayList<>();
+    int[] candidates;
     public List<List<Integer>> subsets(int[] nums) {
-        for (int size = 0; size <= nums.length; size++) backtrack(nums, new HashSet<>(), size, 0);
+        candidates = nums;
+        backtrack(0, new ArrayList<>());
         return res;
     }
-    public void backtrack(int[] nums, HashSet<Integer> currSet, int size, int start) {
-        if (currSet.size() == size) {
-            List<Integer> subset = new ArrayList<>();
-            for (int n: currSet) subset.add(n);
-            res.add(subset);
+    
+    public void backtrack(int level, List<Integer> currSet) {
+        if (level == candidates.length) {
+            res.add(new ArrayList<>(currSet));
             return;
         }
         
-        for (int i = start; i < nums.length; i++) {
-            currSet.add(nums[i]);
-            backtrack(nums, currSet, size, i + 1);
-            currSet.remove(nums[i]);
-        }
+        //don't include candiates[level]
+        backtrack(level + 1, currSet);
+        
+        //include candiates[level]
+        currSet.add(candidates[level]);
+        backtrack(level + 1, currSet);
+        currSet.remove(currSet.size() - 1);
     }
 }
