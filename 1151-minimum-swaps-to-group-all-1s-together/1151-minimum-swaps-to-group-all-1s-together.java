@@ -1,20 +1,25 @@
 class Solution {
+    
     public int minSwaps(int[] data) {
-        int ones = Arrays.stream(data).sum();
-        int cnt_one = 0, max_one = 0;
-        int left = 0, right = 0;
-
-        while (right < data.length) {
-            // updating the number of 1's by adding the new element
-            cnt_one += data[right++];
-            // maintain the length of the window to ones
-            if (right - left > ones) {
-                // updating the number of 1's by removing the oldest element
-                cnt_one -= data[left++];
+        int n = data.length, ones = 0;
+        for (int num: data) if (num == 1) ones++;
+        if (ones == 1) return 0;
+        
+        int low = 0, high = ones - 1, onesInWindow = 0, minSwaps = n;
+        while (high < n) {
+            if (low == 0) {
+                for (int i = low; i <= high; i++) if (data[i] == 1) onesInWindow++;
+            } else {
+                if (data[low - 1] == 1) onesInWindow--;
+                if (data[high] == 1) onesInWindow++;
             }
-            // record the maximum number of 1's in the window
-            max_one = Math.max(max_one, cnt_one);
+           // System.out.println("current window: low " + low + " high " + high + " has ones " + onesInWindow);
+            minSwaps = Math.min(minSwaps, ones - onesInWindow);
+            low++;
+            high++;
         }
-        return ones - max_one;
+        return minSwaps;
     }
+ 
+    
 }
