@@ -16,27 +16,23 @@ class Solution {
         if (poly2 == null) return poly1;
         
         PolyNode dummy = new PolyNode();
-        PolyNode curr = dummy, temp1, temp2;
+        PolyNode curr = dummy;
         
         while (poly1 != null && poly2 != null) {
             if (poly1.power > poly2.power) {
-                temp1 = poly1.next;
                 curr.next = poly1;
-                poly1 = temp1;
+                poly1 = poly1.next;
                 curr = curr.next;
             } else if (poly1.power < poly2.power) {
-                temp2 = poly2.next;
                 curr.next = poly2;
-                poly2 = temp2;
+                poly2 = poly2.next;
                 curr = curr.next;
             } else {
-                temp1 = poly1.next;
-                temp2 = poly2.next;
                 int sum = poly1.coefficient + poly2.coefficient;
                 poly1.coefficient = sum;
                 if (sum != 0) curr.next = poly1;
-                poly1 = temp1;
-                poly2 = temp2;
+                poly1 = poly1.next;
+                poly2 = poly2.next;
                 if (sum != 0) curr = curr.next;
                 if (sum == 0 && poly1 == null && poly2 == null) curr.next = null;
             }
