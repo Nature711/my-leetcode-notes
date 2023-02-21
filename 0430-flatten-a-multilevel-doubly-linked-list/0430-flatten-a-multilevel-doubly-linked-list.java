@@ -9,21 +9,22 @@ class Node {
 */
 
 class Solution {
-    
-    Node tail = null;
     public Node flatten(Node head) {
-        if(head == null) return null;
-
-        head.prev = tail;
-        tail = head;
-
-        Node nextNode = head.next;
-
-        head.next = flatten(head.child);
-        head.child = null;
-
-        tail.next = flatten(nextNode);
-
-        return head;
+        if (head == null) return head;
+        Node dummy = new Node();
+        Node curr = dummy, tmp;
+        Stack<Node> stack = new Stack<>();
+        stack.push(head);
+        while (!stack.isEmpty()) {
+            tmp = stack.pop();
+            if (tmp.next != null) stack.push(tmp.next);
+            if (tmp.child != null) stack.push(tmp.child);
+            curr.next = tmp;
+            tmp.prev = curr;
+            tmp.child = null;
+            curr = tmp;
+        }
+        dummy.next.prev = null;
+        return dummy.next;
     }
 }
