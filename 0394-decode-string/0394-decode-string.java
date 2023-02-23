@@ -1,28 +1,41 @@
 class Solution {
+    
     public String decodeString(String s) {
-        Stack<Character> stack = new Stack<>();
-        for (char c: s.toCharArray()) {
-            if (c == ']') {
-                StringBuilder sb = new StringBuilder();
-                while (stack.peek() != '[') sb.append(stack.pop());
-                stack.pop(); //pop [
-                StringBuilder k = new StringBuilder();
-                while (!stack.isEmpty() && Character.isDigit(stack.peek())) k.append(stack.pop());
-                int times = Integer.valueOf(k.reverse().toString());
-                String temp = repeatK(sb.reverse().toString(), times);
-                for (char ch: temp.toCharArray()) stack.push(ch);
-            } else stack.push(c);
-        }
+        Stack<Object> stack = new Stack<>();
         
         StringBuilder res = new StringBuilder();
-        while (!stack.isEmpty()) res.append(stack.pop());
+        int i = 0, n = s.length();
+        while (i < n) {
+            if (Character.isDigit(s.charAt(i))) {
+                StringBuilder num = new StringBuilder();
+                while (i < n && Character.isDigit(s.charAt(i))) {
+                    num.append(s.charAt(i));
+                    i++;
+                }
+                if (i == n || s.charAt(i) != '[') return "";
+                i--;
+                stack.push(Integer.valueOf(num.toString()));
+            } else if (s.charAt(i) == ']') {
+                StringBuilder pattern = new StringBuilder();
+                while (true) {
+                    char c = (Character) stack.peek();
+                    if (c == '[') break;
+                    pattern.append((Character)stack.pop());
+                }
+                stack.pop(); //pop '['
+                pattern = pattern.reverse();
+                int times = (Integer) stack.pop();
+                for (int t = 0; t < times; t++) {
+                    for (int j = 0; j < pattern.length(); j++) stack.push(pattern.charAt(j));
+                }
+            } else {
+                stack.push(s.charAt(i));
+            }
+            i++;
+        }
+        while (!stack.isEmpty()) { 
+            res.append((Character) stack.pop());
+        }
         return res.reverse().toString();
-    
-    }
-   
-    public String repeatK(String s, int k) {
-        String base = s;
-        for (int i = 0; i < k - 1; i++) s += base;
-        return s;
     }
 }
