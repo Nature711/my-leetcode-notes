@@ -3,7 +3,7 @@ class Solution {
         Stack<Integer> stack = new Stack<>();
         
         int rem = num.length() - k;
-        if (rem == 0) return "0";
+
         for (char c: num.toCharArray()) {
             int curr = Character.getNumericValue(c);
             while (!stack.isEmpty() && curr < stack.peek() && k > 0) {
