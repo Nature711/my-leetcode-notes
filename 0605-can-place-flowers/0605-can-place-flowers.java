@@ -11,16 +11,19 @@ class Solution {
                     if (flowerbed[i - 1] == 0 && flowerbed[i + 1] == 0) {
                         flowerbed[i] = 1;
                         n--;
+                        i++;
                     }
                 } else if (i == 0) {
                     if (flowerbed[i + 1] == 0) {
                         flowerbed[i] = 1;
                         n--;
+                        i++;
                     }
                  } else {
                     if (flowerbed[i - 1] == 0) {
                         flowerbed[i] = 1;
                         n--;
+                        i++;
                     }
     
                 }
