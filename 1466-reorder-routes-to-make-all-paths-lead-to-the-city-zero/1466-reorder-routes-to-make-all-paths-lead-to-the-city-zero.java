@@ -1,29 +1,57 @@
 class Solution {
-    int count = 0;
-
-    public void dfs(int node, int parent, Map<Integer, List<List<Integer>>> adj) {
-        if (!adj.containsKey(node)) {
-            return;
-        }
-        for (List<Integer> nei : adj.get(node)) {
-            int child = nei.get(0);
-            int sign = nei.get(1);
-            if (child != parent) {
-                count += sign;
-                dfs(child, node, adj);
+    
+    Set<Integer> visited = new HashSet<>();
+    int reorderCount = 0;
+    HashMap<Integer, List<Integer>> incoming = new HashMap<>();
+    HashMap<Integer, List<Integer>> outgoing = new HashMap<>();
+    
+    public int minReorder(int n, int[][] connections) {
+        
+        //build graph
+        for (int[] connection: connections) {
+            if (outgoing.containsKey(connection[0])) {
+                outgoing.get(connection[0]).add(connection[1]);
+            } else {
+                List<Integer> l = new ArrayList<>();
+                l.add(connection[1]);
+                outgoing.put(connection[0], l);
+            }
+            
+            if (incoming.containsKey(connection[1])) {
+                incoming.get(connection[1]).add(connection[0]);
+            } else {
+                List<Integer> l = new ArrayList<>();
+                l.add(connection[0]);
+                incoming.put(connection[1], l);
             }
         }
+        
+        helper(0);
+        
+        return reorderCount;
     }
-
-    public int minReorder(int n, int[][] connections) {
-        Map<Integer, List<List<Integer>>> adj = new HashMap<>();
-        for (int[] connection : connections) {
-            adj.computeIfAbsent(connection[0], k -> new ArrayList<List<Integer>>()).add(
-                    Arrays.asList(connection[1], 1));
-            adj.computeIfAbsent(connection[1], k -> new ArrayList<List<Integer>>()).add(
-                    Arrays.asList(connection[0], 0));
+    
+    public void helper(int n) {
+        visited.add(n);
+        
+        //incoming edges: add to visited
+        if (incoming.containsKey(n)) {
+            List<Integer> reachableCities = incoming.get(n);
+            for (int reachableCity: reachableCities) {
+                if (visited.contains(reachableCity)) continue;
+                helper(reachableCity);
+            }
         }
-        dfs(0, -1, adj);
-        return count;
+        
+        //outgoing edges: reorient
+        if (outgoing.containsKey(n)) {
+            List<Integer> citiesToReorient = outgoing.get(n);
+            for (int cityToReorient: citiesToReorient) {
+                if (visited.contains(cityToReorient)) continue;
+                reorderCount++;
+                helper(cityToReorient);
+            }
+        }
+        
     }
 }
