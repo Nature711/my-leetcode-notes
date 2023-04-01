@@ -1,34 +1,22 @@
 class NumMatrix {
-    
-    int[][] grid;
-    int R, C;
-    int[][] prefixSums;
+    int[][] memo;
 
     public NumMatrix(int[][] matrix) {
-        grid = matrix;
-        R = matrix.length;
-        C = matrix[0].length;
-        //dp = new int[R][C];
-        prefixSums = new int[R][C + 1];
+        int R = matrix.length, C = matrix[0].length;
+        memo = new int[R + 1][C + 1];
         
-        //compute prefixSum for each row
-        for (int i = 0; i < R; i++) {
-            computePrefixSum(i); 
+        for (int i = 1; i <= R; i++) {
+            for (int j = 1; j <= C; j++) {
+                memo[i][j] = matrix[i - 1][j - 1] + memo[i - 1][j] + memo[i][j - 1] - memo[i - 1][j - 1];
+                //System.out.println("memo i " + i + " j " + j + " " + memo[i][j]);
+            }
         }
     }
     
     public int sumRegion(int row1, int col1, int row2, int col2) {
-        int sum = 0;
-        for (int r = row1; r <= row2; r++) {
-            sum += prefixSums[r][col2 + 1] - prefixSums[r][col1];
-        }
-        return sum;
+        return memo[row2 + 1][col2 + 1] - memo[row1][col2 + 1] - memo[row2 + 1][col1] + memo[row1][col1];
     }
-    
-    public void computePrefixSum(int row) {
-        prefixSums[row][0] = 0;
-        for (int i = 1; i <= C; i++) prefixSums[row][i] = prefixSums[row][i - 1] + grid[row][i - 1];
-    }
+
 }
 
 /**
