@@ -1,63 +1,53 @@
 class Solution {
-    Integer[][][] memo;
+    Integer[][][] dp;
     int[][] grid;
-    int r, c;
+    int R, C;
+    int mod = 1000000007;
     public int ways(String[] pizza, int k) {
-        r = pizza.length;
-        c = pizza[0].length();
-        memo = new Integer[r][c][k + 1];
-        grid = new int[r][c];
+        R = pizza.length;
+        C = pizza[0].length();
+        dp = new Integer[R][C][k + 1];
+        grid = new int[R][C];
     
-        for (int i = 0; i < r; i++) {
+        for (int i = 0; i < R; i++) {
             String p = pizza[i];
-            for (int j = 0; j < c; j++) {
+            for (int j = 0; j < C; j++) {
                 if (p.charAt(j) == 'A') grid[i][j] = 1;
             }
         }
         
-        return helper(0,0,k);
+        return helper(0, 0, k);
         
     }
     
-    private boolean hasApple(int i, int j, int ii, int jj) {
-        for (int r = i; r <= ii; r++) {
-            for (int c = j; c <= jj; c++) {
-                if (grid[r][c] == 1) {
-                    return true;
-                }
+    public int helper(int r, int c, int k) {
+        
+        if (dp[r][c][k] != null) return dp[r][c][k];
+        
+        if (k == 1) {
+            dp[r][c][k] = hasApple(r, R - 1, c, C - 1) ? 1 : 0;
+            return dp[r][c][k];
+        }
+        
+        int count = 0;
+        for (int i = r; i < R - 1; i++) {
+            if (hasApple(r, i, c, C - 1)) count = (count + helper(i + 1, c, k - 1)) % mod;
+        }
+        for (int j = c; j < C - 1; j++) {
+            if (hasApple(r, R - 1, c, j)) count = (count + helper(r, j + 1, k - 1)) % mod;
+        }
+     
+        dp[r][c][k] = count;
+        return count;
+    }
+    
+    public boolean hasApple(int rs, int re, int cs, int ce) {
+        for (int i = rs; i <= re; i++) {
+            for (int j = cs; j <= ce; j++) {
+                if (grid[i][j] == 1) return true;
             }
         }
         return false;
-    }
-    
-    private int helper(int i, int j, int k) {
-        if (memo[i][j][k] != null) {
-            return memo[i][j][k];
-        }
-        
-        if (k == 1) {
-            if (hasApple(i, j, r-1, c-1)) {
-                memo[i][j][k] = 1;
-            } else {
-                memo[i][j][k] = 0;
-            }
-            return memo[i][j][k];
-        }
-        
-        int ways = 0;
-        for (int ii = i; ii < r-1; ii++) {
-            if (hasApple(i, j, ii, c-1)) {
-                ways = (ways + helper(ii+1, j, k-1)) % 1_000_000_007;
-            }
-        }
-        for (int jj = j; jj < c-1; jj++) {
-            if (hasApple(i, j, r-1, jj)) {
-                ways = (ways + helper(i, jj+1, k-1)) % 1_000_000_007;
-            }
-        }
-        
-        memo[i][j][k] = ways;
-        return ways;
     }
     
     
