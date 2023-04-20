@@ -15,35 +15,28 @@
  */
 class Solution {
      public int widthOfBinaryTree(TreeNode root) {
-        Queue<TreeNode> q = new LinkedList<>();
-        Queue<Integer> qIndex = new LinkedList<>();
-        q.add(root);
-        qIndex.add(1); //store index, assuming root's index is 1
-        int max = 0;
-        while(!q.isEmpty())
-        {
-            int size = q.size();
-            int start = 0, end = 0;
-            for(int i=0; i<size; i++)
-            {
-                TreeNode node = q.remove();
-                int index = qIndex.remove();
-                if(i==0) start = index; //start and end index for each level
-                if(i==size-1) end = index;
-                if(node.left!=null)
-                {
-                    q.add(node.left);
-                    qIndex.add(2*index);
-                }
-                
-                if(node.right!=null)
-                {
-                    q.add(node.right);
-                    qIndex.add(2*index+1);
-                }
-            }
-            max = Math.max(max, end - start + 1);
-        }
-        return max;    
-    }
+         Queue<TreeNode> q = new LinkedList<>();
+         root.val = 0;
+         q.add(root);
+         int maxWidth = 0;
+         while (!q.isEmpty()) {
+             int low = 0, high = 0;
+             int qSize = q.size();
+             for (int i = 0; i < qSize; i++) {
+                 TreeNode n = q.poll();
+                 if (i == 0) low = n.val;
+                 if (i == qSize - 1) high = n.val;
+                 if (n.left != null) {
+                     n.left.val = 2 * n.val;
+                     q.add(n.left);
+                 }
+                 if (n.right != null) {
+                     n.right.val = 2 * n.val + 1;
+                     q.add(n.right);
+                 }
+             }
+             maxWidth = Math.max(maxWidth, (high - low + 1));
+         }
+         return maxWidth;
+     }
 }
