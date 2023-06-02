@@ -1,14 +1,13 @@
 class Solution {
     HashMap<Integer, List<Integer>> graph = new HashMap<>();
-    int[][] bbs;
     public int maximumDetonation(int[][] bombs) {
         int n = bombs.length;
-        bbs = bombs;
-        Arrays.sort(bombs, (b1, b2) -> {
-            int deltaX = b1[0] - b2[0];
-            if (deltaX != 0) return deltaX;
-            else return b1[1] - b2[1];
-        });
+        
+//         Arrays.sort(bombs, (b1, b2) -> {
+//             int deltaX = b1[0] - b2[0];
+//             if (deltaX != 0) return deltaX;
+//             else return b1[1] - b2[1];
+//         });
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == j) continue;
