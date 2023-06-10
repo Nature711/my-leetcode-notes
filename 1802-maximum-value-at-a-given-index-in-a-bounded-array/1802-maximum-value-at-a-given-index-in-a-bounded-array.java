@@ -1,42 +1,34 @@
 class Solution {
-    private long getSum(int index, int value, int n) {
-        long count = 0;
-        
-        // On index's left:
-        // If value > index, there are index + 1 numbers in the arithmetic sequence:
-        // [value - index, ..., value - 1, value].
-        // Otherwise, there are value numbers in the arithmetic sequence:
-        // [1, 2, ..., value - 1, value], plus a sequence of length (index - value + 1) of 1s. 
-        if (value > index) {
-            count += (long)(value + value - index) * (index + 1) / 2;
-        } else {
-            count += (long)(value + 1) * value / 2 + index - value + 1;
-        };
-        // On index's right:
-        // If value >= n - index, there are n - index numbers in the arithmetic sequence:
-        // [value, value - 1, ..., value - n + 1 + index].
-        // Otherwise, there are value numbers in the arithmetic sequence:
-        // [value, value - 1, ..., 1], plus a sequence of length (n - index - value) of 1s. 
-        if (value >= n - index) {
-            count += (long)(value + value - n + 1 + index) * (n - index) / 2;
-        } else {
-            count += (long)(value + 1) * value / 2 + n - index - value;
-        }   
-        
-        return count - value;
-        
-    }
     public int maxValue(int n, int index, int maxSum) {
-        int left = 1, right = maxSum;
+        int nLeft = index, nRight = n - index - 1;
+        long left = 1, right = maxSum;
         while (left < right) {
-            int mid = (left + right + 1) / 2;
-            if (getSum(index, mid, n) <= maxSum) {
-                left = mid;
-            } else {
-                right = mid - 1;
+            long max = (left + right + 1) / 2;
+            long sumLeft = 0, sumRight = 0;
+            if (nLeft > 0) {
+                if (nLeft < max) {
+                    sumLeft = nLeft * (2 * max - nLeft - 1) / 2;
+                } else {
+                    sumLeft = (max - 1) * max / 2;
+                    long diff = nLeft - max + 1;
+                    sumLeft += diff;
+                }
             }
+            if (nRight > 0) {
+                if (nRight < max) {
+                   sumRight = nRight * (2 * max - nRight - 1) / 2;
+                } else {
+                    sumRight = (max - 1) * max / 2;
+                    long diff = nRight - max + 1;
+                    sumRight += diff;
+                }
+            }
+            // System.out.println("sumLeft " + sumLeft + " sumRight " + sumRight + " MAX " + max);
+            // System.out.println(sumLeft + sumRight + max);
+            if (sumLeft + sumRight + max <= maxSum) left = max;
+            else right = max - 1;
         }
-        
-        return left;
+        return (int) left;
     }
+
 }
