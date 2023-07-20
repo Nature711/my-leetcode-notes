@@ -1,32 +1,25 @@
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> stones = new Stack<>();
-        int n = asteroids.length;
-        for (int i = 0; i < n; i++) {
-            int stoneToPush = asteroids[i];
-            boolean bothExploded = false;
-            if (!stones.isEmpty() && stones.peek() > 0 && stoneToPush < 0) {
-                while (!stones.isEmpty() && stones.peek() > 0 && stoneToPush < 0) {
-                    int top = stones.pop();
-                    int diff = Math.abs(top) - Math.abs(stoneToPush);
-                    if (diff > 0) { //top is heavier
-                        stoneToPush = top;
-                    } else if (diff < 0) { //stone to push is heavier 
-                        stoneToPush = stoneToPush;
-                    } else {
-                        //both stones explore, do nothing
-                        bothExploded = true;
-                        break;
-                    }
+        Stack<Integer> stack = new Stack<>();
+        for (int asteroid: asteroids) {
+            boolean newCollide = false;
+            while (!stack.isEmpty() && stack.peek() > 0 && asteroid < 0) {
+                int diff = Math.abs(stack.peek()) - Math.abs(asteroid);
+                if (diff >= 0) { //current top is heavier
+                    newCollide = true;
+                    if (diff == 0) stack.pop();
+                    break;
+                } else { //incoming asteriod is heavier
+                    stack.pop();
                 }
             }
             
-            if (!bothExploded) stones.push(stoneToPush);
+            if (!newCollide) stack.push(asteroid);
+                
         }
         
-        int[] res = new int[stones.size()];
-        int i = stones.size() - 1;
-        while (!stones.isEmpty()) res[i--] = stones.pop();
+        int[] res = new int[stack.size()];
+        for (int i = res.length - 1; i >= 0; i--) res[i] = stack.pop();
         return res;
     }
 }
