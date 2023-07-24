@@ -1,58 +1,68 @@
 class Solution {
-    public int calculate(String s) {
-        Stack<String> stack = new Stack<>();
-        s = s.replaceAll("\\s+", "");
-        int i = 0, j = 0;
-        
-        while (i < s.length()) {
-                
-            if (s.charAt(i) == ')') {
-                
-                List<String> expression = new ArrayList<>();
-                while (!stack.peek().equals("(")) expression.add(stack.pop()); 
-                stack.pop();
-                Integer partialRes = eval(expression);
-                stack.push(partialRes.toString());
-                i++;
-            } else {
-                if (Character.isDigit(s.charAt(i))) {
-                    j = i;
-                    while (j < s.length() && Character.isDigit(s.charAt(j))) j++;
-                    stack.push(s.substring(i, j));
-                    i = j;
-                } else {
-                    stack.push(s.substring(i, i + 1));
-                    i++;
-                }
-            }
-
-            //System.out.println("currStack " + stack);
-        }
-        
-        List<String> exp = new ArrayList<>();
-        while (!stack.isEmpty()) exp.add(stack.pop());
-        return eval(exp);
-    }
     
-    public int eval(List<String> expression) {
-        
-        
-        String last = expression.get(expression.size() - 1);
-        if (last.equals("-")) expression.add("0");
-        //System.out.println("calculate" + expression);
-        int n = expression.size();
-
-        int res = Integer.parseInt(expression.get(n - 1));
-        int numP = n - 3, opP = n - 2;
-        while (numP >= 0 && opP >= 0) {
-            String op = expression.get(opP);
-            int num = Integer.parseInt(expression.get(numP));
-            if (op.equals("+")) res += num;
-            else res -= num;
-            numP -= 2;
-            opP -= 2;
+    public int eval(List<String> exp) {
+       // System.out.println("exp " + exp);
+        if (exp.size() == 1) return Integer.parseInt(exp.get(0));
+        int res, start;
+        if (exp.get(0).equals("-")) {
+            res = -Integer.parseInt(exp.get(1));
+            start = 2;
+        } else {
+            res = Integer.parseInt(exp.get(0));
+            start = 1;
         }
-        //System.out.println("calculate " + expression + " gets " + res);
+        
+        
+        for (int i = start; i < exp.size(); i = i + 2) {
+            if (exp.get(i).equals("+")) res += Integer.parseInt(exp.get(i + 1));
+            else res -= Integer.parseInt(exp.get(i + 1));
+        }
         return res;
     }
+    
+    
+    
+    public int calculate(String s) {
+        
+        s = s.replaceAll("\\s", "");
+        int n = s.length(), i = n - 1;
+        Stack<String> stack = new Stack<>();
+        int res = 0;
+    
+        while (i >= 0) {
+            if (s.charAt(i) == '(') {
+                List<String> list = new ArrayList<>();
+                while (!stack.peek().equals(")")) {
+                    list.add(stack.pop());
+                }
+                stack.pop(); //pop )
+                int tmp = eval(list);
+                stack.push(String.valueOf(tmp));
+            } else if (Character.isDigit(s.charAt(i))) {
+                int pow = 0, num = 0;
+                while (i >= 0 && Character.isDigit(s.charAt(i))) {
+                    num += Character.getNumericValue(s.charAt(i)) * Math.pow(10, pow);
+                    i--;
+                    pow++;
+                }
+                i++;
+                stack.push(String.valueOf(num));
+            } else {
+                stack.push(s.substring(i, i+1));
+            }
+            i--;  
+            //System.out.println("stack " + stack);
+        }
+        
+        if (!stack.isEmpty()) {
+            List<String> list = new ArrayList<>();
+            while (!stack.isEmpty()) {
+                list.add(stack.pop());
+            }
+            res += eval(list);
+        }
+        
+        return res;
+    }
+    
 }
