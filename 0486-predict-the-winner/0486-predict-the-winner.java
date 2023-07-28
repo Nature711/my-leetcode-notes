@@ -16,16 +16,16 @@ class Solution {
 
                 // Calculate the scores for both players for the current subarray
                 int leftPlayer1 = nums[i] + dp[i + 1][j][1];          // Player 1 picks the leftmost element
-                int leftPlayer2 = dp[i + 1][j][0];                   // Player 2 picks the leftmost element
-
+                int leftPlayer2 = dp[i + 1][j][0];                   // Player 2 is forced to pick from the rest optimally
+                
                 int rightPlayer1 = nums[j] + dp[i][j - 1][1];         // Player 1 picks the rightmost element
-                int rightPlayer2 = dp[i][j - 1][0];                  // Player 2 picks the rightmost element
+                int rightPlayer2 = dp[i][j - 1][0];                  // Player 2 is forced to pick from the rest optimally
 
                 // Choose the best option for Player 1 and update the DP table
                 dp[i][j][0] = Math.max(leftPlayer1, rightPlayer1);
 
-                // The remaining score goes to Player 2
-                dp[i][j][1] = leftPlayer1 > rightPlayer1 ? leftPlayer2 : rightPlayer2;
+                // Player 2 also plays optimally based on player 1's choice
+                dp[i][j][1] = Math.min(leftPlayer2, rightPlayer2);
             }
         }
 
