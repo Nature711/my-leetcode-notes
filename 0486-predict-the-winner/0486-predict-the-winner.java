@@ -1,35 +1,29 @@
 class Solution {
     public boolean PredictTheWinner(int[] nums) {
-        int n = nums.length;
-        int[][][] dp = new int[n][n][2];
-
-        // Base case: Subproblems with size 1
-        for (int i = 0; i < n; i++) {
-            dp[i][i][0] = nums[i]; // Player 1 score
-            dp[i][i][1] = 0;       // Player 2 score
+        int total = 0;
+        for (int num: nums) total += num;
+        int player1Score = minimax(0, nums.length - 1, 1, nums, total);
+        
+        return player1Score >= (total - player1Score);
+    }
+    
+    public int minimax(int start, int end, int turn, int[] nums, int total) {
+      
+        if (start == end) {
+            if (turn == 1) return nums[start];
+            else return 0;
         }
-
-        // Filling up the DP table for subproblems with increasing size
-        for (int len = 2; len <= n; len++) {
-            for (int i = 0; i <= n - len; i++) {
-                int j = i + len - 1;
-
-                // Calculate the scores for both players for the current subarray
-                int leftPlayer1 = nums[i] + dp[i + 1][j][1];          // Player 1 picks the leftmost element
-                int leftPlayer2 = dp[i + 1][j][0];                   // Player 2 is forced to pick from the rest optimally
-                
-                int rightPlayer1 = nums[j] + dp[i][j - 1][1];         // Player 1 picks the rightmost element
-                int rightPlayer2 = dp[i][j - 1][0];                  // Player 2 is forced to pick from the rest optimally
-
-                // Choose the best option for Player 1 and update the DP table
-                dp[i][j][0] = Math.max(leftPlayer1, rightPlayer1);
-
-                // Player 2 also plays optimally based on player 1's choice
-                dp[i][j][1] = Math.min(leftPlayer2, rightPlayer2);
-            }
+        
+        if (turn == 1) {
+            int left = nums[start] + minimax(start + 1, end, 2, nums, total);
+            int right = nums[end] + minimax(start, end - 1, 2, nums, total);
+        
+            return Math.max(left, right);
+        } else {
+            int left = minimax(start + 1, end, 1, nums, total);
+            int right = minimax(start, end - 1, 1, nums, total);
+           
+            return Math.min(left, right);
         }
-
-        // dp[0][n - 1] contains the scores for both players for the entire array
-        return dp[0][n - 1][0] >= dp[0][n - 1][1];
     }
 }
