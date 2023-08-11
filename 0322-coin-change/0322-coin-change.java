@@ -1,22 +1,17 @@
 class Solution {
-    HashMap<Integer, Integer> memo = new HashMap<>();
     
     public int coinChange(int[] coins, int amount) {
-        if (amount == 0) return 0;
-        if (amount < 0) return -1;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
         
-        if (memo.containsKey(amount)) return memo.get(amount);
-        
-        int res = amount + 1;
-        for (int coin: coins) {
-            int sub = coinChange(coins, amount - coin);
-            if (sub == -1) continue;
-            res = Math.min(res, sub + 1);
+        for (int i = 1; i <= amount; i++) {
+            for (int coin: coins) {
+                if (i - coin < 0) continue;
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }   
         }
-        res = res > amount ? -1 : res;
-        memo.put(amount, res);
-        
-        return res;
+        return dp[amount] > amount ? -1 : dp[amount];
     }
     
 
