@@ -1,23 +1,23 @@
 class Solution {
+    HashMap<Integer, Integer> memo = new HashMap<>();
+    
     public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
         
-        Arrays.fill(dp, amount + 1);
-        dp[0] = 0;
+        if (memo.containsKey(amount)) return memo.get(amount);
         
-        for (int curr_amount = 1; curr_amount <= amount; curr_amount++) {
-            
-            for (int denom: coins) {
-                int rem = curr_amount - denom;
-               
-                if (rem < 0) continue;
-                
-                dp[curr_amount] = Math.min(dp[curr_amount], dp[rem] + 1);
-                
-            }
-           
+        int res = amount + 1;
+        for (int coin: coins) {
+            int sub = coinChange(coins, amount - coin);
+            if (sub == -1) continue;
+            res = Math.min(res, sub + 1);
         }
+        res = res > amount ? -1 : res;
+        memo.put(amount, res);
         
-        return dp[amount] > amount ? -1 : dp[amount];
+        return res;
     }
+    
+
 }
