@@ -4,7 +4,6 @@ public:
         queue<pair<int, int>> q;
         int m = mat.size(), n = mat[0].size();
         vector<vector<bool>> visited(m, vector<bool>(n, false));
-        vector<vector<int>> res(m, vector<int>(n, 0));
         
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -17,25 +16,26 @@ public:
         
         vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         
-        int level = 0;
+        //int level = 0;
         while (!q.empty()) {
             int size = q.size();
-            for (int t = 0; t < size; t++) {
+            for (int i = 0; i < size; i++) {
                 pair<int, int> cor = q.front();
                 q.pop();
-                int i = cor.first, j = cor.second;
-                if (mat[i][j] == 1) res[i][j] = level;
+                int r = cor.first, c = cor.second;
                 for (vector<int> dir: directions) {
-                    int nextR = i + dir[0], nextC = j + dir[1];
-                    if (nextR < m & nextR >= 0 && nextC < n && nextC >= 0 && !visited[nextR][nextC]) {
+                    int nextR = r + dir[0], nextC = c + dir[1];
+                    if (nextR < m && nextR >= 0 && nextC < n && nextC >= 0 && !visited[nextR][nextC]) {
                         visited[nextR][nextC] = true;
+                        mat[nextR][nextC] = mat[r][c] + 1;
                         q.push({nextR, nextC});
+                        
                     }
                 }
             }
-            level++;
+            //level++;
         }
         
-        return res;
+        return mat;
     }
 };
