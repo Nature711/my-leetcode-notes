@@ -16,24 +16,18 @@ public:
         
         vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         
-        //int level = 0;
         while (!q.empty()) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                pair<int, int> cor = q.front();
-                q.pop();
-                int r = cor.first, c = cor.second;
-                for (vector<int> dir: directions) {
-                    int nextR = r + dir[0], nextC = c + dir[1];
-                    if (nextR < m && nextR >= 0 && nextC < n && nextC >= 0 && !visited[nextR][nextC]) {
-                        visited[nextR][nextC] = true;
-                        mat[nextR][nextC] = mat[r][c] + 1;
-                        q.push({nextR, nextC});
-                        
-                    }
+            pair<int, int> cor = q.front();
+            q.pop();
+            int r = cor.first, c = cor.second;
+            for (vector<int> dir: directions) {
+                int nextR = r + dir[0], nextC = c + dir[1];
+                if (nextR < m && nextR >= 0 && nextC < n && nextC >= 0 && !visited[nextR][nextC]) {
+                    visited[nextR][nextC] = true;
+                    mat[nextR][nextC] = mat[r][c] + 1;
+                    q.push({nextR, nextC});
                 }
             }
-            //level++;
         }
         
         return mat;
