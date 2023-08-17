@@ -1,35 +1,45 @@
 class Solution {
 public:
+    int m;
+    int n;
+    vector<vector<int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        queue<pair<int, int>> q;
-        int m = mat.size(), n = mat[0].size();
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
-        
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (mat[i][j] == 0) {
-                    visited[i][j] = true;
-                    q.push({i, j});
+        m = mat.size();
+        n = mat[0].size();
+        vector<vector<int>> matrix(m, vector<int>(n, 0));
+        vector<vector<bool>> seen(m, vector<bool>(n, false));
+        queue<vector<int>> queue;
+
+        for (int row = 0; row < m; row++) {
+            for (int col = 0; col < n; col++) {
+                matrix[row][col] = mat[row][col];
+                if (matrix[row][col] == 0) {
+                    queue.push({row, col, 0});
+                    seen[row][col] = true;
                 }
             }
         }
         
-        vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        
-        while (!q.empty()) {
-            pair<int, int> cor = q.front();
-            q.pop();
-            int r = cor.first, c = cor.second;
-            for (vector<int> dir: directions) {
-                int nextR = r + dir[0], nextC = c + dir[1];
-                if (nextR < m && nextR >= 0 && nextC < n && nextC >= 0 && !visited[nextR][nextC]) {
-                    visited[nextR][nextC] = true;
-                    mat[nextR][nextC] = mat[r][c] + 1;
-                    q.push({nextR, nextC});
+        while (!queue.empty()) {
+            vector<int> curr = queue.front();
+            queue.pop();
+            int row = curr[0], col = curr[1], steps = curr[2];
+            
+            for (vector<int>& direction: directions) {
+                int nextRow = row + direction[0], nextCol = col + direction[1];
+                if (valid(nextRow, nextCol) && !seen[nextRow][nextCol]) {
+                    seen[nextRow][nextCol] = true;
+                    queue.push({nextRow, nextCol, steps + 1});
+                    matrix[nextRow][nextCol] = steps + 1;
                 }
             }
         }
         
-        return mat;
+        return matrix;
+    }
+    
+    bool valid(int row, int col) {
+        return 0 <= row && row < m && 0 <= col && col < n;
     }
 };
