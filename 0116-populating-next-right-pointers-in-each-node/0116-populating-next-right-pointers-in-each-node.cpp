@@ -20,19 +20,15 @@ class Solution {
 public:
     Node* connect(Node* root) {
         if (root == nullptr) return nullptr;
-        queue<Node*> q;
-        q.push(root);
-        while (!q.empty()) {
-            int size = q.size();
-            Node* tmp = nullptr;
-            for (int i = 0; i < size; i++) {
-                Node* n = q.front();
-                q.pop();
-                n->next = tmp;
-                tmp = n;
-                if (n->right != nullptr) q.push(n->right);
-                if (n->left != nullptr) q.push(n->left);
+        Node* leftmost = root;
+        while (leftmost->left != nullptr) {
+            Node* curr = leftmost;
+            while (curr != nullptr) {
+                curr->left->next = curr->right;
+                curr->right->next = curr->next == nullptr ? nullptr : curr->next->left;
+                curr = curr->next;
             }
+            leftmost = leftmost->left;
         }
         return root;
     }
