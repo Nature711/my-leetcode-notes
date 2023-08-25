@@ -1,31 +1,37 @@
 class UnionFind {
 private: 
-    vector<int> roots;
+    vector<int> parents;
     int num_of_components;
 public: 
     UnionFind(int n): num_of_components(n) {
-        roots.resize(n);
-        for (int i = 0; i < n; i++) roots[i] = i; //initially the parent of every node is just itself
+        parents.resize(n);
+        for (int i = 0; i < n; i++) parents[i] = i;
     }
     
-    
     int find(int x) {
-        return roots[x];
+        int rx = x;
+        
+        while (parents[rx] != rx) {
+            rx = parents[rx];
+        }
+        
+        return rx;
     }
     
     void union_sets(int x, int y) {
-        int rx = find(x), ry = find(y);
-        if (rx == ry) return;
+        int px = find(x), py = find(y);
+        if (px == py) return;
+        parents[py] = px;
         
-        for (int i = 0; i < roots.size(); i++) {
-            if (roots[i] == ry) roots[i] = rx;
-        }
         num_of_components--;
-        
     }
     
     int get_num_of_components() {
         return num_of_components;
+    }
+    
+    bool is_connected(int x, int y) {
+        return find(x) == find(y);
     }
 };
 
