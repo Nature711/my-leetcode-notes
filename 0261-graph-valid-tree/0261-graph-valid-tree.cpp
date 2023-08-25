@@ -1,34 +1,52 @@
+class UnionFind {
+private: 
+    vector<int> parents;
+    int num_of_components;
+    vector<int> ranks;
+public: 
+    UnionFind(int n): num_of_components(n) {
+        parents.resize(n);
+        ranks.resize(n);
+        for (int i = 0; i < n; i++) {
+            parents[i] = i;
+            ranks[i] = 1;
+        }
+    }
+    
+    int find(int x) {
+        if (x == parents[x]) return x;
+        parents[x] = find(parents[x]);
+        return parents[x];
+    }
+    
+    bool union_sets(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return false;
+        if (ranks[px] > ranks[py]) parents[py] = px;
+        else if (ranks[px] < ranks[py]) parents[px] = py;
+        else {
+            parents[py] = px;
+            ranks[px]++; 
+        }
+        
+        num_of_components--;
+        return true;
+    }
+    
+    int get_num_of_components() {
+        return num_of_components;
+    }
+
+};
+
 class Solution {
 public:
     bool validTree(int n, vector<vector<int>>& edges) {
-        if (n != edges.size() + 1) return false;
-        
-        unordered_map<int, unordered_set<int>> graph;
+        UnionFind uf(n);
         for (vector<int>& edge: edges) {
-            if (graph.find(edge[0]) == graph.end()) graph[edge[0]] = {};
-            graph[edge[0]].insert(edge[1]);
-            if (graph.find(edge[1]) == graph.end()) graph[edge[1]] = {};
-            graph[edge[1]].insert(edge[0]);
+            if (!uf.union_sets(edge[0], edge[1])) return false;
         }
-        
-        unordered_set<int> visited;
-        visited.insert(0);
-        bool res = dfs(0, -1, visited, graph);
-        return res && visited.size() == n;
-    }
-    
-    bool dfs(int curr, int parent, unordered_set<int>& visited, unordered_map<int, unordered_set<int>>& graph) {
-        if (graph.find(curr) == graph.end()) return true;
-        unordered_set<int> neighbors = graph[curr];
-      
-        for (int neighbor: neighbors) {
-            if (neighbor == parent) continue;
-            if (visited.find(neighbor) != visited.end()) return false;
-            else {
-                visited.insert(neighbor);
-                if (!dfs(neighbor, curr, visited, graph)) return false;
-            }
-        }
-        return true;
+        return uf.get_num_of_components() == 1;
     }
 };
+    
