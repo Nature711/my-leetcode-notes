@@ -1,20 +1,21 @@
 class Solution {
 public:
     vector<int> countBits(int n) {
-        vector<int> res(n + 1, 0);
         
-        for (int i = 0; i <= n; i++) res[i] = count(i);
+        vector<int> dp(n + 1, 0);
+        if (n == 0) return dp;
+        dp[1] = 1;
         
-        return res;
-    }
-    
-    int count(int n) {
-        int count = 0;
-        while (n > 0) {
-            if (n % 2 == 1) count++;
-            n /= 2;
+        int i = 2;
+        while (i <= n) {
+            for (int j = i; j <= 2 * i - 1; j++) {
+                if (j > n) break;
+                dp[j] = dp[j - i] + 1;
+            }
+            i = i << 1;
         }
-        return count;
+        
+        return dp;
     }
 
 };
