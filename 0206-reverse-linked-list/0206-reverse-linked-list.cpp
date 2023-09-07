@@ -10,19 +10,41 @@
  */
 class Solution {
 public:
-    ListNode* reverseList(ListNode* head) {
-        if (head == nullptr) return nullptr;
-        
-        ListNode* dummy = new ListNode();
-        ListNode* prev = dummy;
-        ListNode* curr = head;
-        while (curr != nullptr) {
-            ListNode* tmpNext = curr->next;
-            curr->next = prev;
-            prev = curr;  
-            curr = tmpNext;
+    
+    int getNodeCount(ListNode* head) {
+        int res = 0;
+        while (head != nullptr) {
+            head = head->next;
+            res++;
         }
-        head->next = nullptr;
-        return prev;
+        return res;
     }
+    
+    ListNode* reverseList(ListNode* head) {
+        // Handle the edge case of an empty list
+        if (!head) return nullptr;
+
+        // Create a dummy node to handle the case when left = 1
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* prev = dummy;
+        
+        // Start reversing the sublist
+        ListNode* current = prev->next;
+        ListNode* next = nullptr;
+        
+        int n = getNodeCount(head);
+
+        for (int i = 0; i < n - 1; i++) {
+            next = current->next;
+            current->next = next->next;
+            next->next = prev->next;
+            prev->next = next;
+        }
+
+        return dummy->next;
+    }
+    
+
 };
+
