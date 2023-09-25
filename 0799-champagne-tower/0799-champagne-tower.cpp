@@ -1,21 +1,25 @@
 class Solution {
 public:
     double champagneTower(int poured, int query_row, int query_glass) {
-        double cups[query_row + 1][query_row + 1];
-        for (int i = 0; i < query_row + 1; i++) {
-            for (int j = 0; j < query_row + 1; j++) {
-                cups[i][j] = 0.00;
+        vector<double> curr_row = { (double) poured };
+        int curr_row_idx = 0;
+        while (curr_row_idx < query_row) {
+            vector<double> next_row(curr_row.size() + 1);
+            bool updated = false;
+            for (int j = 0; j < curr_row.size(); j++) {
+                double curr_row_before = curr_row[j];
+                curr_row[j] = min(curr_row[j], 1.00);
+                double excess = curr_row_before - curr_row[j];
+                if (excess >= 0.00) {
+                    next_row[j] += excess / 2.00;
+                    next_row[j + 1] += excess / 2.00;
+                    updated = true;
+                }
             }
+            if (!updated) break;
+            curr_row = next_row;
+            curr_row_idx++;
         }
-        cups[0][0] = (double) poured;
-        
-        for (int i = 0; i < query_row; i++) { //for each row i
-            for (int j = 0; j <= i; j++) { //for each cup j in row i
-                double rem = max(0.00, cups[i][j] - 1);
-                cups[i + 1][j] += rem / 2;
-                cups[i + 1][j + 1] += rem / 2;
-            }
-        }
-        return min(1.00, cups[query_row][query_glass]);
+        return min(1.00, curr_row[query_glass]);
     }
 };
