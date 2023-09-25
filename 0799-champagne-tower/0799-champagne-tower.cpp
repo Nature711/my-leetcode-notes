@@ -10,13 +10,15 @@ public:
                 double curr_row_before = curr_row[j];
                 curr_row[j] = min(curr_row[j], 1.00);
                 double excess = curr_row_before - curr_row[j];
-                if (excess >= 0.00) {
+                if (excess > 0.00) {
                     next_row[j] += excess / 2.00;
                     next_row[j + 1] += excess / 2.00;
                     updated = true;
                 }
             }
-            if (!updated) break;
+            if (!updated) {
+                if (curr_row_idx < query_row) return 0.00;
+            }
             curr_row = next_row;
             curr_row_idx++;
         }
