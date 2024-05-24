@@ -1,44 +1,37 @@
 class Solution {
-    int[] arr;
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
-        arr = nums;
-        int n = nums.length;
         List<List<Integer>> res = new ArrayList<>();
-        
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Skip duplicate elements for i
             if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int j = i + 1, k = nums.length - 1;
             
-            HashSet<List<Integer>> twoSumRes = twoSum(-nums[i], i + 1, n - 1);
-            for (List<Integer> ts: twoSumRes) {
-                List<Integer> numList = new ArrayList<>();
-                numList.add(ts.get(0));
-                numList.add(ts.get(1));
-                numList.add(nums[i]);
-                res.add(numList);
+            while (j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == 0) {
+                    List<Integer> r = new ArrayList<>();
+                    r.add(nums[i]);
+                    r.add(nums[j]);
+                    r.add(nums[k]);
+                    res.add(r);
+                    // Skip duplicate elements for j
+                    while (j < k && nums[j] == nums[j + 1]) {
+                        j++;
+                    }
+                    // Skip duplicate elements for k
+                    while (j < k && nums[k] == nums[k - 1]) {
+                        k--;
+                    }
+                    k--;
+                    j++;
+                } else if (sum > 0) {
+                    k--;
+                } else {
+                    j++;
+                }
             }
-
         }
         return res;
     }
-    
-    public HashSet<List<Integer>> twoSum(int target, int low, int high) {
-        HashSet<List<Integer>> res = new HashSet<>();
-        while (low < high) {
-            int currSum = arr[low] + arr[high];
-            if (currSum == target) {
-                List<Integer> list = new ArrayList<>();
-                list.add(arr[low]);
-                list.add(arr[high]);
-                res.add(list);
-                low++;
-                high--;
-            } else if (currSum < target) low++;
-            else high--;
-        }
-        return res;
-    }
-    
-        
-        
 }
