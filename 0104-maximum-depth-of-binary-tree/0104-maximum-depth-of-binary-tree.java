@@ -14,13 +14,18 @@
  * }
  */
 class Solution {
-    HashMap<TreeNode, Integer> memo = new HashMap<>();
+    int max = 0;
     public int maxDepth(TreeNode root) {
-        if (root == null) return 0;
-        if (memo.containsKey(root)) return memo.get(root);
-        
-        int res = Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
-        memo.put(root, res);
-        return res;
+        maxDepthHelper(root, 0);
+        return max;
+    }
+    
+    public void maxDepthHelper(TreeNode root, int currDepth) {
+        if (root == null) {
+            max = Math.max(max, currDepth);
+            return;
+        }
+        maxDepthHelper(root.left, currDepth + 1);
+        maxDepthHelper(root.right, currDepth + 1);
     }
 }
