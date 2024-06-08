@@ -25,13 +25,8 @@ class Solution {
         
         int left = helper(root.left);
         int right = helper(root.right);
-        int res = 0;
-        if (root.left != null) res = Math.max(res, 1 + left);
-        if (root.right != null) res = Math.max(res, 1 + right);
-        int diaViaRoot = 0;
-        if (root.left != null) diaViaRoot += left + 1;
-        if (root.right != null) diaViaRoot += right + 1;
-        maxDiameter = Math.max(maxDiameter, diaViaRoot);
-        return res;
+      
+        maxDiameter = Math.max(maxDiameter, left + right);
+        return 1 + Math.max(left, right);
     }
 }
