@@ -14,31 +14,31 @@
  * }
  */
 class Solution {
-    List<String> paths = new ArrayList<>();
     public List<String> binaryTreePaths(TreeNode root) {
-        return getPaths(root);
-    }
-    
-    public List<String> getPaths(TreeNode root) {
-        List<String> res = new ArrayList<>();
-        if (root == null) return res;
-        if (root.left == null && root.right == null) {
-            res.add(Integer.toString(root.val));
-            return res;
-        }
-        
-        List<String> left = getPaths(root.left);
-        List<String> right = getPaths(root.right);
-        
-        
-        for (String path: left) {
-            res.add(root.val + "->" + path);
-        }
-        for (String path: right) {
-            res.add(root.val + "->" + path);
-        }
-        
+        LinkedList<String> path = new LinkedList<>();
+        LinkedList<String> res = new LinkedList<>();
+        backtrack(root, path, res);
         return res;
     }
-     
+    
+
+    void backtrack(TreeNode root, LinkedList<String> path, LinkedList<String> res) {
+        if (root == null) {
+            return;
+        }
+        // base case
+        if (root.left == null && root.right == null) {
+            path.addLast(root.val + "");
+            res.addLast(String.join("->", path));
+            path.removeLast();
+            return;
+        }
+        // do
+        path.addLast(root.val + "");
+        // backtrack
+        backtrack(root.left, path, res);
+        backtrack(root.right, path, res);
+        // undo
+        path.removeLast();
+    }
 }
