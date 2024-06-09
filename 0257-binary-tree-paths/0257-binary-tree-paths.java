@@ -14,31 +14,31 @@
  * }
  */
 class Solution {
-    
+    List<String> paths = new ArrayList<>();
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String> res = new ArrayList<>();
-        return dfs(root);
+        return getPaths(root);
     }
     
-    public List<String> dfs(TreeNode root) {
+    public List<String> getPaths(TreeNode root) {
         List<String> res = new ArrayList<>();
-        
-        if (root.left != null) {
-            List<String> leftTrees = dfs(root.left);
-            for (String leftTree: leftTrees) {
-                res.add(root.val + "->" + leftTree);
-            }
-        }
-        if (root.right != null) {
-            List<String> rightTrees = dfs(root.right);
-            for (String rightTree: rightTrees) {
-                res.add(root.val + "->"  + rightTree);
-            }
-        }
-        if (res.size() == 0) {
+        if (root == null) return res;
+        if (root.left == null && root.right == null) {
             res.add(Integer.toString(root.val));
+            return res;
+        }
+        
+        List<String> left = getPaths(root.left);
+        List<String> right = getPaths(root.right);
+        
+        
+        for (String path: left) {
+            res.add(root.val + "->" + path);
+        }
+        for (String path: right) {
+            res.add(root.val + "->" + path);
         }
         
         return res;
     }
+     
 }
