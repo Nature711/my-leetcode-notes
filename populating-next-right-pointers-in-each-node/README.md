@@ -1,3 +1,4 @@
+[Discussion Post (created on 10/5/2024 at 10:11)](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/5286749/Bridging-the-Gaps%3A-A-Recursive-Ternary-Tree-Approach)  
 <h2>  Populating Next Right Pointers in Each Node</h2><hr><div><p>You are given a <strong>perfect binary tree</strong> where all leaves are on the same level, and every parent has two children. The binary tree has the following definition:</p>
 
 <pre>struct Node {
