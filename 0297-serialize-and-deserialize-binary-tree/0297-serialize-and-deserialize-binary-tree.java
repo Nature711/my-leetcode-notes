@@ -10,48 +10,38 @@
 public class Codec {
 
     // Encodes a tree to a single string.
+    StringBuilder sb;
     public String serialize(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        
-        while (!q.isEmpty()) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode curr = q.remove();
-                if (curr != null) {
-                    sb.append(curr.val);
-                    sb.append(",");
-                    q.add(curr.left);
-                    q.add(curr.right);
-                } else {
-                    sb.append("#");
-                }
-            }
-        }
-        
+        sb = new StringBuilder();
+        preorder(root);
         return sb.toString();
+    }
+    
+    void preorder(TreeNode root) {
+        if (root == null) sb.append("#");
+        else {
+            sb.append(root.val);
+            sb.append(",");
+            preorder(root.left);
+            preorder(root.right);
+        }
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
         List<TreeNode> list = parseTree(data);
-      
-        TreeNode root = list.get(0);
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        int i = 1;
+        return helper(list);
+    }
+    
+    TreeNode helper(List<TreeNode> list) {
+        if (list.isEmpty()) return null;
         
-        while (!q.isEmpty()) {
-            TreeNode curr = q.poll();
-            if (curr != null) {
-                curr.left = list.get(i++);
-                curr.right = list.get(i++);
-                if (curr.left != null) q.add(curr.left);
-                if (curr.right != null) q.add(curr.right);
-            }
-        }
+        TreeNode root = list.removeFirst();
+        if (root == null) return null;
         
+        root.left = helper(list);
+        root.right = helper(list);
+         
         return root;
     }
     
