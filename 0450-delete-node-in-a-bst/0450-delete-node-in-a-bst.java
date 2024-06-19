@@ -15,38 +15,26 @@
  */
 class Solution {
     public TreeNode deleteNode(TreeNode root, int key) {
-        TreeNode dummy = new TreeNode();
-        dummy.left = root;
-        TreeNode curr = root, prev = dummy;
-        while (curr != null && curr.val != key) {
-                prev = curr;
-                if (curr.val < key) curr = curr.right;
-                else curr = curr.left;
-        }
-        if (curr == null) return root;
-        
-        boolean isLeft = true;
-        if (prev.right == curr) isLeft = false;
+      if (root == null) return root;
 
-        TreeNode tmpLeft = curr.left, tmpRight = curr.right;
-        if (isLeft) {
-            prev.left = tmpLeft == null ? tmpRight : tmpLeft;
+        if (root.val == key) {
+               if (root.left == null && root.right == null) return null;
+                if (root.left == null && root.right != null) return root.right;
+                if (root.left != null && root.right == null) return root.left;
+
+                TreeNode newRoot = root.left;
+                TreeNode pos = newRoot;
+                while (pos.right != null) pos = pos.right;
+                pos.right = root.right;
+                return newRoot;
+
         }
-        else {
-            prev.right = tmpLeft == null ? tmpRight : tmpLeft;
-        } 
-        
-        TreeNode pos;
-        if (tmpLeft != null) {
-            pos = tmpLeft;
-            while (pos != null && pos.right != null) pos = pos.right;
-            if (pos != null) pos.right = tmpRight;
+
+        if (root.val < key) {
+                root.right = deleteNode(root.right, key);
         } else {
-            pos = tmpRight;
-            while (pos != null && pos.left != null) pos = pos.left;
-            if (pos != null) pos.left = tmpLeft;
+                root.left = deleteNode(root.left, key);
         }
-
-        return dummy.left == null ? dummy.right : dummy.left;
+        return root;
     }
 }
