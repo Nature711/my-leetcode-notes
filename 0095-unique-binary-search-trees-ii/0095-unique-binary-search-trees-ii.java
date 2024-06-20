@@ -14,11 +14,15 @@
  * }
  */
 class Solution {
+    HashMap<Pair<Integer, Integer>, List<TreeNode>> memo = new HashMap<>();
     public List<TreeNode> generateTrees(int n) {
         return generate(1, n);
     }
     
     List<TreeNode> generate(int low, int high) {
+        Pair<Integer, Integer> key = new Pair<>(low, high);
+        if (memo.containsKey(key)) return memo.get(key);
+        
         List<TreeNode> res = new ArrayList<>();
         if (low > high) return res;
         for (int i = low; i <= high; i++) {
@@ -51,6 +55,8 @@ class Solution {
                 }
             }
         }
+        
+        memo.put(key, res);
         
         return res;
     }
