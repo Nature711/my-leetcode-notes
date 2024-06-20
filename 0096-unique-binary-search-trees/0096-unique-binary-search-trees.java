@@ -1,16 +1,15 @@
 class Solution {
-    HashMap<Integer, Integer> memo = new HashMap<>();
     public int numTrees(int n) {
-        if (n < 2) return 1;
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
         
-        if (memo.containsKey(n)) return memo.get(n);
-
-        int res = 0;
-        for (int numLeft = 0; numLeft < n; numLeft++) {
-                res += numTrees(numLeft) * numTrees(n - numLeft - 1);
+        for (int i = 2; i <= n; i++) {
+            for (int numLeft = 0; numLeft < i; numLeft++) {
+                dp[i] += dp[numLeft] * dp[i - numLeft - 1];
+            } 
         }
 
-        memo.put(n, res);
-        return res;    
+        return dp[n];
     }
 }
