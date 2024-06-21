@@ -8,18 +8,33 @@
  * }
  */
 class Solution {
+    
+    HashMap<Integer, Integer> nodeToLevel = new HashMap<>();
+    List<List<TreeNode>> paths = new ArrayList<>();
+    
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) return root;
-
+        backtrack(root, new ArrayList<>(), p, q, 0);
         
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        int pLevel = nodeToLevel.get(p.val), qLevel = nodeToLevel.get(q.val);
+        int minLevel = Math.min(pLevel, qLevel);
         
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        
-        if(right == null) return left;
-        if(left == null) return right;
-        
+        for (int i = minLevel; i >= 0; i--) {
+            if (paths.get(0).get(i) == paths.get(1).get(i)) return paths.get(0).get(i);
+        }
         
         return root;
     }
+
+    void backtrack(TreeNode curr, List<TreeNode> currPath, TreeNode p, TreeNode q, int level) {
+            if (curr == null || paths.size() == 2) return;
+        
+            nodeToLevel.put(curr.val, level);                                                                                             
+            currPath.add(curr);
+            if (curr == p || curr == q) {
+                paths.add(new ArrayList<>(currPath));
+            }    
+            backtrack(curr.left, currPath, p, q, level + 1);
+            backtrack(curr.right, currPath, p, q, level + 1);
+            currPath.remove(currPath.size() - 1);
+    }       
 }
