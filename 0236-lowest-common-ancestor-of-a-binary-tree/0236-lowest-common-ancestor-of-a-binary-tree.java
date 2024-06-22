@@ -8,27 +8,21 @@
  * }
  */
 class Solution {
-    List<List<TreeNode>> paths = new ArrayList<>();
-    
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        backtrack(root, new ArrayList<>(), p, q, 0);
+        return find(root, p.val, q.val);
+    }
+    
+    TreeNode find(TreeNode root, int val1, int val2) {
+        if (root == null) return null;
         
-        int minLevel = Math.min(paths.get(0).size(), paths.get(1).size());
-        for (int i = minLevel - 1; i >= 0; i--) {
-            if (paths.get(0).get(i) == paths.get(1).get(i)) return paths.get(0).get(i);
-        }
+        if (root.val == val1 || root.val == val2) return root;
         
-        return root;
+        TreeNode left = find(root.left, val1, val2);
+        TreeNode right = find(root.right, val1, val2);
+        
+        if (left != null && right != null) return root;
+        
+        return left != null ? left : right;
     }
 
-    void backtrack(TreeNode curr, List<TreeNode> currPath, TreeNode p, TreeNode q, int level) {
-            if (curr == null || paths.size() == 2) return;                                                                                           
-            currPath.add(curr);
-            if (curr == p || curr == q) {
-                paths.add(new ArrayList<>(currPath));
-            }    
-            backtrack(curr.left, currPath, p, q, level + 1);
-            backtrack(curr.right, currPath, p, q, level + 1);
-            currPath.remove(currPath.size() - 1);
-    }       
 }
