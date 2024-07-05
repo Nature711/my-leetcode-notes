@@ -1,16 +1,18 @@
 class Solution {
     public void moveZeroes(int[] nums) {
-        int ptr = 0;
-        while (ptr < nums.length) {
-            if (nums[ptr] == 0) {
-                int guide = ptr + 1;
-                while (guide < nums.length && nums[guide] == 0) guide++;
-                if (guide < nums.length) {
-                    nums[ptr] = nums[guide];
-                    nums[guide] = 0;
-                }
+        int idx = removeElement(nums, 0);
+        for (int i = idx; i < nums.length; i++) nums[i] = 0;
+    }
+    
+    int removeElement(int[] nums, int val) {
+        int slow = 0, fast = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
             }
-            ptr++;
+            fast++;
         }
+        return slow;
     }
 }
