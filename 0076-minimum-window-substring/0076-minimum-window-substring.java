@@ -1,59 +1,44 @@
 class Solution {
     public String minWindow(String s, String t) {
-        HashMap<Character, Integer> dictionary = new HashMap<>();
-        HashMap<Character, Integer> rem = new HashMap<>();
-        HashMap<Character, Integer> found = new HashMap<>();
+        HashMap<Character, Integer> need = new HashMap<>();
+        HashMap<Character, Integer> have = new HashMap<>();
+        int valid = 0;
         for (char c: t.toCharArray()) {
-            dictionary.put(c, dictionary.getOrDefault(c, 0) + 1);
-            rem.put(c, rem.getOrDefault(c, 0) + 1);
+            need.put(c, need.getOrDefault(c, 0) + 1);
         }
-        int low = 0, high = 0, n = s.length(), len = s.length(), bestL = low, bestH = high;
-        String res = s.substring(bestL, bestH);
+        int left = 0, right = 0;
+        int startIdx = -1, minLen = Integer.MAX_VALUE;
         
-        while (low < n) {
-            while (rem.size() > 0 && high < n) {
-                char curr = s.charAt(high);
-                if (dictionary.containsKey(curr)) {
-                    if (rem.containsKey(curr)) {
-                        if (rem.get(curr) == 1) rem.remove(curr);
-                        else rem.put(curr, rem.get(curr) - 1);
-                    }
-                    found.put(curr, found.getOrDefault(curr, 0) + 1);
+        while (right < s.length()) {
+            // expanding window
+            char rightChar = s.charAt(right);
+            if (need.containsKey(rightChar)) {
+                have.put(rightChar, have.getOrDefault(rightChar, 0) + 1); 
+                if (have.get(rightChar).equals(need.get(rightChar))) valid++;
+            }
+            
+            // shrinking window
+            while (valid == need.size()) {
+                int currLen = right - left + 1;
+                if (currLen < minLen) {
+                    minLen = currLen;
+                    startIdx = left;
                 }
                 
-                high++;
-                // System.out.println("expanding " + s.substring(low, high));
-                // System.out.println("found " + found);
-                // System.out.println("rem " + rem);
-                
-            }
-            //System.out.println("before update" + " rem " + rem);
-            if (rem.size() == 0 && high - low <= len) {
-                bestL = low;
-                bestH = high;
-                len = high - low;
-                //System.out.println("update low " + low + " high " + high + " currLen " + len);
-            }
-            char atLow = s.charAt(low);
-            if (dictionary.containsKey(atLow)) {
-                if (found.containsKey(atLow)) {
-                    if (found.get(atLow) == 1) {
-                        found.remove(atLow);
-                        rem.put(atLow, rem.getOrDefault(atLow, 0) + 1);
-                    } else {
-                        found.put(atLow, found.get(atLow) - 1);
-                        int toPut = dictionary.get(atLow) - found.get(atLow);
-                        if (toPut > 0) rem.put(atLow, toPut);
-                    }
+                char leftChar = s.charAt(left);
+                if (need.containsKey(leftChar)) {
+                    int rem = have.get(leftChar) - 1;
+                    if (rem < need.get(leftChar)) valid--;
                     
+                    if (rem == 0) have.remove(leftChar);
+                    else have.put(leftChar, rem);
                 }
+                left++;
             }
-            low++;
-        //     System.out.println("shrinking " + s.substring(low, high));
-        //     System.out.println("found " + found);
-        //     System.out.println("rem " + rem);
+            right++;
         }
         
-        return s.substring(bestL, bestH);
+        if (startIdx == -1) return "";
+        return s.substring(startIdx, startIdx + minLen);
     }
 }
