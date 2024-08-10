@@ -12,22 +12,21 @@ class Solution {
     }
     
     public int lengthOfLIS(int[] nums) {
-        List<Stack<Integer>> decks = new ArrayList<>();
+        int[] decks = new int[nums.length];
+        int numDecks = 0;
         for (int num: nums) {
-            // determine if num can fit into any existing deck 
-            int low = 0, high = decks.size();
-            while (low < high) { // find the leftmost deck whose top > num
-                int mid = low + (high - low) / 2; 
-                if (decks.get(mid).peek() >= num) high = mid;
+            int low = 0, high = numDecks; 
+            while (low < high) { // find the leftmost element whose >= num
+                int mid = low + (high - low) / 2;
+                if (decks[mid] >= num) high = mid;
                 else low = mid + 1;
             }
-            if (low == decks.size()) {
-                decks.add(new Stack<>());
-                decks.get(decks.size() - 1).push(num);
-            } else {
-                decks.get(low).push(num);
+            if (decks[low] >= num) decks[low] = num;
+            else {
+                decks[numDecks] = num;
+                numDecks++;
             }
         }
-        return decks.size();
+        return numDecks;
     }
 }
