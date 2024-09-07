@@ -14,36 +14,27 @@
  * }
  */
 class Solution {
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
-        if (root == null) return null;
-        
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        
-        List<TreeNode> nodes = new ArrayList<>();
-        while (!q.isEmpty()) {
-            int n = q.size();
-            nodes = new ArrayList<>(); // clear list to store the nodes at the current level
-            for (int i = 0; i < n; i++) {
-                TreeNode curr = q.poll();
-                nodes.add(curr);
-                if (curr.left != null) q.add(curr.left);
-                if (curr.right != null) q.add(curr.right);
-            }
+    class Result {
+        TreeNode node; // root of subtree with all deepest nodes  
+        int depth; // depth of those deepest nodes
+        public Result(TreeNode node, int depth) {
+            // 记录最近公共祖先节点 node
+            this.node = node;
+            // 记录以 node 为根的二叉树最大深度
+            this.depth = depth;
         }
-        return lowestCommonAncestor(root, nodes.get(0), nodes.get(nodes.size() - 1));
+    }
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        Result r = helper(root);
+        return r.node;
     }
     
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == null || q == null) return null;
-        if (root == p) return p;
-        if (root == q) return q;
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        
-        if (left == null && right == null) return null;
-        if (left != null && right == null) return left;
-        if (left == null && right != null) return right;
-        return root;
+    Result helper(TreeNode root) {
+        if (root == null) return new Result(null, 0);
+        Result left = helper(root.left);
+        Result right = helper(root.right);
+        if (left.depth == right.depth) return new Result(root, left.depth + 1);
+        if (left.depth > right.depth) return new Result(left.node, left.depth + 1);
+        return new Result(right.node, right.depth + 1);
     }
 }
