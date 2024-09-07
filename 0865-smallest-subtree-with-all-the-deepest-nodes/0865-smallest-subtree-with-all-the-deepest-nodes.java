@@ -31,16 +31,15 @@ class Solution {
                 if (curr.right != null) q.add(curr.right);
             }
         }
-        return LCA(root, nodes);
+        return lowestCommonAncestor(root, nodes.get(0), nodes.get(nodes.size() - 1));
     }
     
-    TreeNode LCA(TreeNode root, List<TreeNode> nodes) {
-        if (root == null) return null;
-        for (TreeNode node: nodes) {
-            if (root == node) return node;
-        }
-        TreeNode left = LCA(root.left, nodes);
-        TreeNode right = LCA(root.right, nodes);
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || p == null || q == null) return null;
+        if (root == p) return p;
+        if (root == q) return q;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
         
         if (left == null && right == null) return null;
         if (left != null && right == null) return left;
