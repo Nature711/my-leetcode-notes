@@ -1,87 +1,70 @@
 class Solution {
-    Set<Integer> dfsVisited = new HashSet<>();
-    int n;
-    int[][] matrix;
+    int m, n;
+    int[][] grids;
+    
     public int shortestBridge(int[][] grid) {
-        Set<Integer> s1 = new HashSet<>();
-        Set<Integer> s2 = new HashSet<>();
-        n = grid.length;
-        matrix = grid;
-        for (int i = 0; i < n; i++) {
-            boolean flag = false;
-            for (int j = 0; j < n; j++) {
-                int curr = i * n + j;
+        m = grid.length;
+        n = grid[0].length;
+        grids = grid;
+        Queue<int[]> q = new LinkedList<>();
+
+        // Step 1: Find the first island and add its boundary to the queue
+        boolean found = false;
+        for (int i = 0; i < m && !found; i++) {
+            for (int j = 0; j < n && !found; j++) {
                 if (grid[i][j] == 1) {
-                    dfs(i, j);
-                    flag = true;
-                    break;
-                }  
+                    dfs(i, j, q);  // Mark the first island and add its boundary to the queue
+                    found = true;
+                }
             }
-            if (flag) break;
-        }
-        s1 = dfsVisited;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int curr = i * n + j;
-                if (grid[i][j] == 1 && !s1.contains(curr))
-                    s2.add(curr);
-            }
-        }
-        
-        Set<Integer> starts = new HashSet<>();
-        Set<Integer> targets = new HashSet<>();
-        
-        if (s1.size() < s2.size()) {
-            starts = s1;
-            targets = s2;
-        } else {
-            starts = s2;
-            targets = s1;
         }
 
-        Queue<Integer> q = new LinkedList<>();
-        Set<Integer> visited = new HashSet<>(starts);
-        for (int start: starts) {
-            q.add(start);
-        }
-        
+        // Step 2: Perform BFS from the first island's boundary to find the shortest bridge
         int steps = 0;
-
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        
         while (!q.isEmpty()) {
             int size = q.size();
-            boolean canReach = false;
-            
             for (int i = 0; i < size; i++) {
-                int curr = q.poll();
-                if (targets.contains(curr)) return steps - 1;
-                int r = curr / n, c = curr % n;
-                int down = (r + 1) * n + c, up = (r - 1) * n + c, 
-                    right = r * n + (c + 1), left = r * n + (c - 1);
+                int[] curr = q.poll();
+                int currI = curr[0], currJ = curr[1];
                 
-                if (r + 1 < n && visited.add(down)) q.add(down);
-                if (r - 1 >= 0 && visited.add(up)) q.add(up);
-                if (c + 1 < n && visited.add(right)) q.add(right);
-                if (c - 1 >= 0 && visited.add(left)) q.add(left);
+                // Try all four directions
+                for (int[] dir : dirs) {
+                    int nextI = currI + dir[0];
+                    int nextJ = currJ + dir[1];
+                    
+                    // Check if the next position is within bounds
+                    if (nextI >= 0 && nextI < m && nextJ >= 0 && nextJ < n) {
+                        // If it's part of the second island, return the number of steps
+                        if (grids[nextI][nextJ] == 1) return steps;
+                        
+                        // If it's water (0), add it to the queue for expansion and mark as visited
+                        if (grids[nextI][nextJ] == 0) {
+                            grids[nextI][nextJ] = -1;  // Mark as visited
+                            q.add(new int[]{nextI, nextJ});
+                        }
+                    }
+                }
             }
             steps++;
         }
-        
-        return steps;
-    }
-    
-    public void dfs(int i, int j) {
 
-        int curr = i * n + j;
-        if (i < 0 || i == n || j < 0 || j == n || dfsVisited.contains(curr) || matrix[i][j] == 0) 
-            return;
-        
-        dfsVisited.add(curr);
-        
-        dfs(i + 1, j);
-        dfs(i - 1, j);
-        dfs(i, j + 1);
-        dfs(i, j - 1);
+        return -1;  // Shouldn't reach here
     }
     
-    
+    // Step 1: DFS to mark the first island and add its boundary to the BFS queue
+    void dfs(int i, int j, Queue<int[]> q) {
+        // Base condition: If out of bounds or if it's not land (1), return
+        if (i < 0 || i >= m || j < 0 || j >= n || grids[i][j] != 1) return;
+        
+        grids[i][j] = -1;  // Mark this land as visited by changing it to -1
+        q.add(new int[]{i, j});  // Add the current cell to the queue
+        
+        // Explore all four directions
+        dfs(i + 1, j, q);
+        dfs(i - 1, j, q);
+        dfs(i, j + 1, q);
+        dfs(i, j - 1, q);
+    }
 }
